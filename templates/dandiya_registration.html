@@ -1,0 +1,256 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dandiya Registration | WSDC
+{% endblock %}
+
+{% block content %}
+
+<section class="booking-section dandiya-registration-section">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <p class="section-label">
+                WSDC PRESENTS
+            </p>
+
+            <h1>
+                {{ event.name }}
+            </h1>
+
+            <p>
+                Register now and get ready to celebrate Dandiya Night
+                with WSDC.
+            </p>
+
+        </div>
+
+
+        <!-- EVENT INFORMATION -->
+
+        <div class="dandiya-registration-event">
+
+            <div class="dandiya-registration-detail">
+
+                <span>📅</span>
+
+                <div>
+                    <strong>Date</strong>
+
+                    <p>
+                        {{ event.event_date|date:"j F Y" }}
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="dandiya-registration-detail">
+
+                <span>🕐</span>
+
+                <div>
+                    <strong>Timing</strong>
+
+                    <p>
+
+                        {% if event.start_time %}
+
+                            {{ event.start_time|time:"g:i A" }}
+
+                            {% if event.end_time %}
+                                - {{ event.end_time|time:"g:i A" }}
+                            {% endif %}
+
+                        {% else %}
+
+                            Timing will be announced
+
+                        {% endif %}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="dandiya-registration-detail">
+
+                <span>📍</span>
+
+                <div>
+                    <strong>Venue</strong>
+
+                    <p>
+                        {{ event.venue }}
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- REGISTRATION FORM -->
+
+        <div class="booking-form-wrapper">
+
+            <form
+                method="post"
+                class="booking-form"
+            >
+
+                {% csrf_token %}
+
+
+                {% if form.non_field_errors %}
+
+                    <div class="form-errors">
+
+                        {{ form.non_field_errors }}
+
+                    </div>
+
+                {% endif %}
+
+
+                <!-- PASS -->
+
+                <div class="form-group">
+
+                    <label for="{{ form.dandiya_pass.id_for_label }}">
+                        Choose Your Pass
+                    </label>
+
+                    {{ form.dandiya_pass }}
+
+                    {% if form.dandiya_pass.errors %}
+                        {{ form.dandiya_pass.errors }}
+                    {% endif %}
+
+                </div>
+
+
+                <!-- NAME -->
+
+                <div class="form-group">
+
+                    <label for="{{ form.name.id_for_label }}">
+                        Your Name
+                    </label>
+
+                    {{ form.name }}
+
+                    {% if form.name.errors %}
+                        {{ form.name.errors }}
+                    {% endif %}
+
+                </div>
+
+
+                <!-- PHONE -->
+
+                <div class="form-group">
+
+                    <label for="{{ form.phone.id_for_label }}">
+                        Phone Number
+                    </label>
+
+                    {{ form.phone }}
+
+                    {% if form.phone.errors %}
+                        {{ form.phone.errors }}
+                    {% endif %}
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label for="{{ form.email.id_for_label }}">
+                        Email Address
+                    </label>
+
+                    {{ form.email }}
+
+                    {% if form.email.errors %}
+                        {{ form.email.errors }}
+                    {% endif %}
+
+                </div>
+
+
+                <!-- AGE -->
+
+                <div class="form-group">
+
+                    <label for="{{ form.age.id_for_label }}">
+                        Age
+                    </label>
+
+                    {{ form.age }}
+
+                    {% if form.age.errors %}
+                        {{ form.age.errors }}
+                    {% endif %}
+
+                </div>
+
+
+                <!-- PARTICIPANTS -->
+
+                <div class="form-group">
+
+                    <label for="{{ form.number_of_participants.id_for_label }}">
+                        Number of Participants
+                    </label>
+
+                    {{ form.number_of_participants }}
+
+                    {% if form.number_of_participants.errors %}
+                        {{ form.number_of_participants.errors }}
+                    {% endif %}
+
+                </div>
+
+
+                <!-- MESSAGE -->
+
+                <div class="form-group">
+
+                    <label for="{{ form.message.id_for_label }}">
+                        Message
+                    </label>
+
+                    {{ form.message }}
+
+                    {% if form.message.errors %}
+                        {{ form.message.errors }}
+                    {% endif %}
+
+                </div>
+
+
+                <!-- SUBMIT -->
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    🎟️ Submit Registration
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

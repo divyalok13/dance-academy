@@ -1,0 +1,1107 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+WSDC | Dance • Fitness • Wellness | Buxar
+{% endblock %}
+
+{% block content %}
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero" id="home">
+
+    <div class="hero-glow"></div>
+
+    <div class="hero-content">
+
+        <p class="hero-festival">
+            🪔 NAVRATRI • DANCE • CELEBRATION 🪔
+        </p>
+
+        <p class="hero-tagline">
+            DANCE • FITNESS • WELLNESS
+        </p>
+
+        <h1>
+            Move Your Body.
+            <span>Feel The Rhythm.</span>
+        </h1>
+
+        <p class="hero-description">
+            Welcome to WSDC — a place where movement becomes
+            confidence, fitness becomes a lifestyle and every
+            beat brings people together.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a
+                href="#classes"
+                class="btn btn-primary"
+            >
+                Explore Classes
+            </a>
+
+            <a
+                href="{% url 'trial_booking' %}"
+                class="btn btn-secondary"
+            >
+                Book a Trial
+            </a>
+
+        </div>
+
+        <div class="hero-trust">
+
+            <span>✨ Learn</span>
+            <span>•</span>
+            <span>💃 Move</span>
+            <span>•</span>
+            <span>🪔 Celebrate</span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     ABOUT
+========================================================= -->
+
+<section
+    class="section about-section"
+    id="about"
+>
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <p class="section-label">
+                🪔 ABOUT WSDC
+            </p>
+
+            <h2>
+                More Than A Dance Academy
+            </h2>
+
+            <p>
+                A place to move, connect, learn and grow.
+            </p>
+
+        </div>
+
+
+        <div class="about-content">
+
+            <div class="about-image">
+
+                <img
+                    src="{% static 'images/about.jpg' %}"
+                    alt="WSDC Dance Academy"
+                >
+
+            </div>
+
+
+            <div class="about-text">
+
+                <p>
+                    WSDC is a dance, fitness and wellness academy
+                    based in Buxar, Bihar, created for people who
+                    want to become more active, confident and
+                    energetic.
+                </p>
+
+                <p>
+                    We believe that dance is not just about learning
+                    steps. It is about expressing yourself, building
+                    confidence, meeting people and enjoying every
+                    moment of movement.
+                </p>
+
+                <p>
+                    Whether you are a beginner taking your first
+                    dance class, a fitness enthusiast looking for
+                    an energetic workout, or someone simply wanting
+                    to try something new, WSDC welcomes you.
+                </p>
+
+                <p>
+                    Our classes are designed to create a positive,
+                    friendly and motivating environment where
+                    everyone can learn at their own pace.
+                </p>
+
+                <p>
+                    From dance and Zumba to yoga and choreography,
+                    our goal is to bring movement and wellness into
+                    everyday life.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="about-highlights">
+
+            <div class="about-highlight-card">
+                <span>💃</span>
+                <h3>Learn</h3>
+                <p>Discover new styles and develop your skills.</p>
+            </div>
+
+            <div class="about-highlight-card">
+                <span>💪</span>
+                <h3>Get Fit</h3>
+                <p>Make fitness enjoyable through movement.</p>
+            </div>
+
+            <div class="about-highlight-card">
+                <span>❤️</span>
+                <h3>Connect</h3>
+                <p>Meet people and become part of our community.</p>
+            </div>
+
+            <div class="about-highlight-card">
+                <span>✨</span>
+                <h3>Grow</h3>
+                <p>Build confidence both inside and outside class.</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     CLASSES
+========================================================= -->
+
+<section
+    class="section classes-section"
+    id="classes"
+>
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <p class="section-label">
+                💃 WHAT WE OFFER
+            </p>
+
+            <h2>
+                Find Your Rhythm
+            </h2>
+
+            <p>
+                Choose a class that matches your energy,
+                interests and goals.
+            </p>
+
+        </div>
+
+
+        <div class="classes-grid">
+
+            {% for dance_class in classes %}
+
+            <article class="class-card">
+
+                {% if dance_class.image %}
+
+                <div class="class-image">
+
+                    <img
+                        src="{{ dance_class.image.url }}"
+                        alt="{{ dance_class.name }}"
+                    >
+
+                </div>
+
+                {% endif %}
+
+
+                <div class="class-content">
+
+                    <h3>
+                        {{ dance_class.name }}
+                    </h3>
+
+                    <p>
+                        {{ dance_class.description }}
+                    </p>
+
+
+                    {% if dance_class.age_group %}
+
+                    <p class="class-meta">
+                        <strong>Age:</strong>
+                        {{ dance_class.age_group }}
+                    </p>
+
+                    {% endif %}
+
+
+                    {% if dance_class.fee %}
+
+                    <p class="class-meta">
+                        <strong>Fee:</strong>
+                        ₹{{ dance_class.fee|floatformat:0 }}
+                    </p>
+
+                    <p class="class-meta">
+                        <strong>After Registration:</strong>
+                        ₹{{ dance_class.discounted_fee|floatformat:0 }}
+                        <span>(20% OFF)</span>
+                    </p>
+
+                    {% endif %}
+
+                </div>
+
+            </article>
+
+
+            {% empty %}
+
+            <div class="empty-state">
+                <p>Classes will be available soon.</p>
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     SCHEDULE
+========================================================= -->
+
+<section
+    class="section schedule-section"
+    id="schedule"
+>
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <p class="section-label">
+                🕐 CLASS TIMINGS
+            </p>
+
+            <h2>
+                Your Time. Your Class.
+            </h2>
+
+            <p>
+                Check our current class schedule and find a time
+                that works for you.
+            </p>
+
+        </div>
+
+
+        <div class="schedule-list">
+
+            {% for schedule in schedules %}
+
+            <div class="schedule-item">
+
+                <div class="schedule-class">
+                    <strong>
+                        {{ schedule.dance_class.name }}
+                    </strong>
+                </div>
+
+                <div class="schedule-day">
+                    {{ schedule.day }}
+                </div>
+
+                <div class="schedule-time">
+
+                    {{ schedule.start_time|time:"g:i A" }}
+                    -
+                    {{ schedule.end_time|time:"g:i A" }}
+
+                </div>
+
+            </div>
+
+
+            {% empty %}
+
+            <div class="empty-state">
+                <p>Schedule will be available soon.</p>
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     DANDIYA / NAVRATRI
+========================================================= -->
+
+{% if dandiya_events %}
+
+<section
+    class="section dandiya-section"
+    id="dandiya"
+>
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <p class="section-label">
+                🪔 ✨ SPECIAL NAVRATRI EVENT ✨ 🪔
+            </p>
+
+            <h2>
+                Dandiya Night
+            </h2>
+
+            <p>
+                Celebrate Navratri with music, dance, colours,
+                energy and unforgettable memories with WSDC.
+            </p>
+
+        </div>
+
+
+        {% for event in dandiya_events %}
+
+        <article class="dandiya-event-card">
+
+            {% if event.image %}
+
+            <div class="dandiya-event-image">
+
+                <img
+                    src="{{ event.image.url }}"
+                    alt="{{ event.name }}"
+                >
+
+            </div>
+
+            {% endif %}
+
+
+            <div class="dandiya-event-content">
+
+                <p class="dandiya-event-label">
+                    🪔 WSDC PRESENTS 🪔
+                </p>
+
+                <h2>
+                    {{ event.name }}
+                </h2>
+
+
+                {% if event.description %}
+
+                <p class="dandiya-event-description">
+                    {{ event.description }}
+                </p>
+
+                {% endif %}
+
+
+                <div class="dandiya-event-details">
+
+                    <div class="dandiya-detail">
+
+                        <span class="dandiya-detail-icon">
+                            📅
+                        </span>
+
+                        <div>
+                            <strong>Date</strong>
+
+                            <p>
+                                {{ event.event_date|date:"j F Y" }}
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="dandiya-detail">
+
+                        <span class="dandiya-detail-icon">
+                            🕐
+                        </span>
+
+                        <div>
+
+                            <strong>Timing</strong>
+
+                            {% if event.start_time %}
+
+                            <p>
+
+                                {{ event.start_time|time:"g:i A" }}
+
+                                {% if event.end_time %}
+                                -
+                                {{ event.end_time|time:"g:i A" }}
+                                {% endif %}
+
+                            </p>
+
+                            {% else %}
+
+                            <p>
+                                Timing will be announced
+                            </p>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="dandiya-detail">
+
+                        <span class="dandiya-detail-icon">
+                            📍
+                        </span>
+
+                        <div>
+
+                            <strong>Venue</strong>
+
+                            <p>
+                                {{ event.venue }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                {% if event.passes.all %}
+
+                <div class="dandiya-passes">
+
+                    <div class="dandiya-passes-heading">
+
+                        <p class="section-label">
+                            🎟️ REGISTRATION PASSES
+                        </p>
+
+                        <h3>
+                            Choose Your Pass
+                        </h3>
+
+                    </div>
+
+
+                    <div class="dandiya-passes-grid">
+
+                        {% for pass in event.passes.all %}
+
+                        {% if pass.is_active %}
+
+                        <div class="dandiya-pass-card">
+
+                            <div class="pass-sparkle">
+                                ✦
+                            </div>
+
+                            <h4>
+                                {{ pass.name }}
+                            </h4>
+
+
+                            {% if pass.description %}
+
+                            <p>
+                                {{ pass.description }}
+                            </p>
+
+                            {% endif %}
+
+
+                            <div class="dandiya-pass-price">
+                                ₹{{ pass.price|floatformat:0 }}
+                            </div>
+
+
+                            <span class="dandiya-pass-people">
+
+                                {% if pass.number_of_people > 1 %}
+                                👥 {{ pass.number_of_people }} people
+                                {% else %}
+                                👤 1 person
+                                {% endif %}
+
+                            </span>
+
+                        </div>
+
+                        {% endif %}
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+
+                {% if event.group_discount_percent > 0 %}
+
+                <div class="dandiya-group-discount">
+
+                    <span>👥</span>
+
+                    <div>
+
+                        <strong>
+                            Group Discount Available!
+                        </strong>
+
+                        <p>
+                            Get
+                            {{ event.group_discount_percent|floatformat:0 }}%
+                            off for eligible groups.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                {% else %}
+
+                <div class="dandiya-group-discount">
+
+                    <span>👥</span>
+
+                    <div>
+
+                        <strong>
+                            Coming With A Group?
+                        </strong>
+
+                        <p>
+                            Contact us on WhatsApp for group offers.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+
+                <div class="dandiya-actions">
+
+                    <a
+                        href="{% url 'dandiya_registration' event.id %}"
+                        class="btn btn-primary"
+                    >
+                        🎟️ Register Now
+                    </a>
+
+
+                    <a
+                        href="https://wa.me/917643860013?text=Hi%20WSDC%2C%20I%20want%20to%20know%20more%20about%20{{ event.name|urlencode }}."
+                        class="btn btn-secondary"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        💬 WhatsApp Us
+                    </a>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        {% if event.sponsors.all %}
+
+        <div class="dandiya-sponsors">
+
+            <div class="section-heading">
+
+                <p class="section-label">
+                    ✨ OUR SUPPORTERS ✨
+                </p>
+
+                <h3>
+                    Proudly Supported By
+                </h3>
+
+            </div>
+
+
+            <div class="dandiya-sponsors-grid">
+
+                {% for sponsor in event.sponsors.all %}
+
+                {% if sponsor.is_active %}
+
+
+                {% if sponsor.website %}
+
+                <a
+                    href="{{ sponsor.website }}"
+                    target="_blank"
+                    rel="noopener"
+                    class="dandiya-sponsor-card"
+                >
+
+                {% else %}
+
+                <div class="dandiya-sponsor-card">
+
+                {% endif %}
+
+
+                    {% if sponsor.logo %}
+
+                    <div class="dandiya-sponsor-logo">
+
+                        <img
+                            src="{{ sponsor.logo.url }}"
+                            alt="{{ sponsor.name }}"
+                        >
+
+                    </div>
+
+                    {% endif %}
+
+
+                    <h4>
+                        {{ sponsor.name }}
+                    </h4>
+
+
+                {% if sponsor.website %}
+
+                </a>
+
+                {% else %}
+
+                </div>
+
+                {% endif %}
+
+
+                {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endif %}
+
+
+<!-- =========================================================
+     GALLERY
+========================================================= -->
+
+<section
+    class="section gallery-section"
+    id="gallery"
+>
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <p class="section-label">
+                📸 OUR MOMENTS
+            </p>
+
+            <h2>
+                Feel The Energy
+            </h2>
+
+            <p>
+                A glimpse into the movement, smiles and memories
+                created at WSDC.
+            </p>
+
+        </div>
+
+
+        <div class="gallery-grid">
+
+            {% for image in gallery_images %}
+
+            <div class="gallery-item">
+
+                <img
+                    src="{{ image.image.url }}"
+                    alt="{{ image.title|default:'WSDC Dance Academy' }}"
+                >
+
+                <div class="gallery-overlay">
+                    ✨ WSDC
+                </div>
+
+            </div>
+
+
+            {% empty %}
+
+            <div class="empty-state">
+
+                <p>
+                    Gallery images will be available soon.
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     TESTIMONIALS
+========================================================= -->
+
+<section
+    class="section testimonials-section"
+    id="testimonials"
+>
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <p class="section-label">
+                ❤️ STUDENT EXPERIENCES
+            </p>
+
+            <h2>
+                What People Say
+            </h2>
+
+            <p>
+                Real experiences from people who have been part
+                of the WSDC journey.
+            </p>
+
+        </div>
+
+
+        <div class="testimonials-grid">
+
+            {% for testimonial in testimonials %}
+
+            <article class="testimonial-card">
+
+                <div class="testimonial-rating">
+
+                    {% for star in "12345" %}
+
+                    {% if forloop.counter <= testimonial.rating %}
+                    ★
+                    {% else %}
+                    ☆
+                    {% endif %}
+
+                    {% endfor %}
+
+                </div>
+
+
+                <p class="testimonial-message">
+                    "{{ testimonial.message }}"
+                </p>
+
+
+                <p class="testimonial-name">
+                    — {{ testimonial.name }}
+                </p>
+
+            </article>
+
+
+            {% empty %}
+
+            <div class="empty-state">
+
+                <p>
+                    Testimonials will be available soon.
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     TRIAL CTA
+========================================================= -->
+
+<section
+    class="section trial-section"
+    id="trial"
+>
+
+    <div class="container">
+
+        <div class="trial-content">
+
+            <p class="section-label">
+                ✨ READY TO MOVE?
+            </p>
+
+            <h2>
+                Start Your Journey With WSDC
+            </h2>
+
+            <p>
+                Your first step can be simple.
+                Try a class and experience the energy for yourself.
+            </p>
+
+
+            <a
+                href="{% url 'trial_booking' %}"
+                class="btn btn-primary"
+            >
+                Book Your Trial
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     CONTACT
+========================================================= -->
+
+<section
+    class="section contact-section"
+    id="contact"
+>
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <p class="section-label">
+                📞 GET IN TOUCH
+            </p>
+
+            <h2>
+                Come Dance With Us
+            </h2>
+
+            <p>
+                Ready to dance, get fit or simply move more?
+                We're here to help.
+            </p>
+
+        </div>
+
+
+        <div class="contact-cards">
+
+
+            <a
+                href="tel:7643860013"
+                class="contact-card"
+            >
+
+                <div class="contact-icon">
+                    ☎
+                </div>
+
+                <div>
+
+                    <h3>
+                        Call Us
+                    </h3>
+
+                    <p>
+                        7643860013
+                    </p>
+
+                </div>
+
+            </a>
+
+
+            <a
+                href="https://wa.me/917643860013"
+                target="_blank"
+                rel="noopener"
+                class="contact-card"
+            >
+
+                <div class="contact-icon">
+                    💬
+                </div>
+
+                <div>
+
+                    <h3>
+                        WhatsApp
+                    </h3>
+
+                    <p>
+                        7643860013
+                    </p>
+
+                </div>
+
+            </a>
+
+
+            <div class="contact-card">
+
+                <div class="contact-icon">
+                    📍
+                </div>
+
+                <div>
+
+                    <h3>
+                        Visit Us
+                    </h3>
+
+                    <p>
+                        Pustakalay Road,<br>
+                        beside Devi Pharma,<br>
+                        Buxar, Bihar
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="location-map">
+
+            <div class="map-heading">
+
+                <p class="section-label">
+                    📍 FIND US
+                </p>
+
+                <h3>
+                    Our Location
+                </h3>
+
+                <p>
+                    Pustakalay Road, beside Devi Pharma,
+                    Buxar, Bihar
+                </p>
+
+            </div>
+
+
+            <div class="map-container">
+
+                <iframe
+                    src="https://www.google.com/maps?q=Pustakalay+Road,+beside+Devi+Pharma,+Buxar,+Bihar&output=embed"
+                    width="100%"
+                    height="400"
+                    style="border:0;"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    title="WSDC Dance Academy Location">
+                </iframe>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     FINAL NAVRATRI MESSAGE
+========================================================= -->
+
+<section class="navratri-footer-message">
+
+    <div class="container">
+
+        <div class="navratri-message-content">
+
+            <span>🪔</span>
+
+            <div>
+
+                <p>
+                    Dance • Celebrate • Connect
+                </p>
+
+                <strong>
+                    Happy Navratri from WSDC
+                </strong>
+
+            </div>
+
+            <span>🪔</span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}
+Booking Received | WSDC
+{% endblock %}
+
+
+{% block content %}
+
+<section class="section success-section">
+
+    <div class="container">
+
+        <div class="success-content">
+
+            <p class="section-label">
+                THANK YOU
+            </p>
+
+            <h1>
+                Your Trial Request Has Been Received!
+            </h1>
+
+            <p>
+                Thank you for choosing WSDC.
+                We'll get in touch with you soon.
+            </p>
+
+            <a
+                href="{% url 'home' %}"
+                class="btn btn-primary"
+            >
+                Back to Home
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

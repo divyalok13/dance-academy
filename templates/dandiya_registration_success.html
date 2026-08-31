@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+
+{% block title %}
+Registration Successful | WSDC
+{% endblock %}
+
+{% block content %}
+
+<section class="section success-section">
+
+    <div class="container">
+
+        <div class="success-content">
+
+            <!-- =========================
+                 SUCCESS HEADER
+            ========================== -->
+
+            <p class="section-label">
+                WSDC DANDIYA NIGHT
+            </p>
+
+            <h1>
+                Registration Successful! 🎉
+            </h1>
+
+            {% if registration %}
+
+                <p class="success-message">
+                    Thank you,
+                    <strong>{{ registration.name }}</strong>.
+                    Your Dandiya registration has been received successfully.
+                </p>
+
+
+                <!-- =========================
+                     ENTRY CODE
+                ========================== -->
+
+                <div class="entry-code-box">
+
+                    <span class="entry-code-label">
+                        YOUR ENTRY CODE
+                    </span>
+
+                    <strong class="entry-code">
+                        {{ registration.entry_code }}
+                    </strong>
+
+                    <p>
+                        Keep this code safe. You may need it for
+                        event entry and future communication.
+                    </p>
+
+                </div>
+
+
+                <!-- =========================
+                     REGISTRATION DETAILS
+                ========================== -->
+
+                <div class="registration-summary">
+
+                    <div class="registration-detail">
+
+                        <span>
+                            Event
+                        </span>
+
+                        <strong>
+                            {{ registration.event.name }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="registration-detail">
+
+                        <span>
+                            Date
+                        </span>
+
+                        <strong>
+                            {{ registration.event.event_date|date:"j F Y" }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="registration-detail">
+
+                        <span>
+                            Venue
+                        </span>
+
+                        <strong>
+                            {{ registration.event.venue }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="registration-detail">
+
+                        <span>
+                            Pass
+                        </span>
+
+                        <strong>
+                            {{ registration.dandiya_pass.name }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="registration-detail">
+
+                        <span>
+                            Participants
+                        </span>
+
+                        <strong>
+                            {{ registration.number_of_participants }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="registration-detail">
+
+                        <span>
+                            Total Amount
+                        </span>
+
+                        <strong>
+                            ₹{{ registration.total_amount|floatformat:0 }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="registration-detail">
+
+                        <span>
+                            Payment Status
+                        </span>
+
+                        <strong>
+                            {{ registration.payment_status }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="registration-detail">
+
+                        <span>
+                            Registered On
+                        </span>
+
+                        <strong>
+                            {{ registration.created_at|date:"j F Y, g:i A" }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================
+                     PAYMENT NOTE
+                ========================== -->
+
+                <div class="success-note">
+
+                    <strong>
+                        💳 Payment Status:
+                        {{ registration.payment_status }}
+                    </strong>
+
+                    <p>
+                        Your registration is currently recorded in our system.
+                        Our team will contact you on your registered phone
+                        number regarding payment and further event details.
+                    </p>
+
+                </div>
+
+
+            {% else %}
+
+                <!-- =========================
+                     FALLBACK
+                ========================== -->
+
+                <p class="success-message">
+                    Your registration has been received successfully. 🎉
+                </p>
+
+                <div class="success-note">
+
+                    <strong>
+                        📱 Registration Received
+                    </strong>
+
+                    <p>
+                        Our team will contact you on your registered phone
+                        number regarding your registration and payment details.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- =========================
+                 NAVIGATION
+            ========================== -->
+
+            <div class="hero-buttons">
+
+                <a
+                    href="{% url 'home' %}#dandiya"
+                    class="btn btn-primary"
+                >
+                    🪩 Back to Dandiya Night
+                </a>
+
+                <a
+                    href="{% url 'home' %}"
+                    class="btn btn-secondary"
+                >
+                    🏠 Back to Home
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

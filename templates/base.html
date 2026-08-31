@@ -1,0 +1,145 @@
+{% load static %}
+
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>{% block title %}WSDC | Buxar{% endblock %}</title>
+
+<meta
+    name="description"
+    content="WSDC Dance Academy in Buxar — Dance, Fitness and Wellness for everyone."
+>
+
+<link
+    rel="stylesheet"
+    href="{% static 'css/style.css' %}"
+>
+
+<link
+    rel="icon"
+    type="image/x-icon"
+    href="{% static 'images/favicon (2).ico' %}"
+>
+
+{% block extra_css %}{% endblock %}
+
+</head><body><!-- =========================
+     NAVBAR
+========================== -->
+
+<header class="site-header">
+
+    <nav class="navbar">
+
+        <a
+            href="{% url 'home' %}"
+            class="brand"
+        >
+            WSDC
+        </a>
+
+
+        <div class="nav-links">
+
+            <a href="{% url 'home' %}#about">
+                About
+            </a>
+
+            <a href="{% url 'home' %}#classes">
+                Classes
+            </a>
+
+            <a href="{% url 'home' %}#schedule">
+                Schedule
+            </a>
+
+            <a href="{% url 'home' %}#gallery">
+                Gallery
+            </a>
+
+            <a href="{% url 'home' %}#testimonials">
+                Testimonials
+            </a>
+
+            <a href="{% url 'home' %}#contact">
+                Contact
+            </a>
+
+            <a
+                href="{% url 'trial_booking' %}"
+                class="nav-cta"
+            >
+                Book Trial
+            </a>
+
+        </div>
+
+    </nav>
+
+</header>
+
+
+<!-- =========================
+     MAIN CONTENT
+========================== -->
+
+<main>
+
+    {% block content %}
+    {% endblock %}
+
+</main>
+
+
+<!-- =========================
+     FLOATING WHATSAPP BUTTON
+========================== -->
+
+<a
+    href="https://wa.me/917643860013"
+    class="whatsapp-float"
+    target="_blank"
+    rel="noopener"
+    aria-label="Chat with WSDC on WhatsApp"
+>
+    <span class="whatsapp-icon">💬</span>
+    <span class="whatsapp-text">WhatsApp Us</span>
+</a>
+
+
+<!-- =========================
+     FOOTER
+========================== -->
+
+<footer class="site-footer">
+
+    <div class="footer-content">
+
+        <div>
+
+            <h3>
+                WSDC
+            </h3>
+
+            <p>
+                Dance • Fitness • Wellness
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <p>
+                © {% now "Y" %} WSDC. All rights reserved.
+            </p>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+{% block extra_js %}{% endblock %}
+
+</body></html>

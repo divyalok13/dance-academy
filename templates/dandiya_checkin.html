@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dandiya Check-In | WSDC
+{% endblock %}
+
+{% block content %}
+
+<section class="section booking-section">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <p class="section-label">
+                WSDC DANDIYA NIGHT
+            </p>
+
+            <h1>
+                Dandiya Check-In 🎟️
+            </h1>
+
+            <p>
+                Enter the attendee's entry code to verify their registration.
+            </p>
+
+        </div>
+
+
+        <!-- =========================
+             CHECK-IN FORM
+        ========================== -->
+
+        <div class="booking-form-wrapper">
+
+            <form
+                method="post"
+                class="booking-form"
+            >
+
+                {% csrf_token %}
+
+                {{ form.non_field_errors }}
+
+
+                <div class="form-group">
+
+                    <label for="{{ form.entry_code.id_for_label }}">
+                        Entry Code
+                    </label>
+
+                    {{ form.entry_code }}
+
+                    {{ form.entry_code.errors }}
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    🔍 Verify Entry
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- =========================
+             REGISTRATION RESULT
+        ========================== -->
+
+        {% if checked and registration %}
+
+        <div class="registration-summary">
+
+            <div class="registration-detail">
+
+                <span>
+                    Status
+                </span>
+
+                <strong>
+                    {% if registration.payment_status == "Paid" %}
+                        ✅ PAID — ENTRY VALID
+                    {% elif registration.payment_status == "Pending" %}
+                        ⏳ PAYMENT PENDING
+                    {% else %}
+                        ❌ PAYMENT FAILED
+                    {% endif %}
+                </strong>
+
+            </div>
+
+
+            <div class="registration-detail">
+
+                <span>
+                    Entry Code
+                </span>
+
+                <strong>
+                    {{ registration.entry_code }}
+                </strong>
+
+            </div>
+
+
+            <div class="registration-detail">
+
+                <span>
+                    Name
+                </span>
+
+                <strong>
+                    {{ registration.name }}
+                </strong>
+
+            </div>
+
+
+            <div class="registration-detail">
+
+                <span>
+                    Phone
+                </span>
+
+                <strong>
+                    {{ registration.phone }}
+                </strong>
+
+            </div>
+
+
+            <div class="registration-detail">
+
+                <span>
+                    Event
+                </span>
+
+                <strong>
+                    {{ registration.event.name }}
+                </strong>
+
+            </div>
+
+
+            <div class="registration-detail">
+
+                <span>
+                    Pass
+                </span>
+
+                <strong>
+                    {{ registration.dandiya_pass.name }}
+                </strong>
+
+            </div>
+
+
+            <div class="registration-detail">
+
+                <span>
+                    Participants
+                </span>
+
+                <strong>
+                    {{ registration.number_of_participants }}
+                </strong>
+
+            </div>
+
+
+            <div class="registration-detail">
+
+                <span>
+                    Total Amount
+                </span>
+
+                <strong>
+                    ₹{{ registration.total_amount|floatformat:0 }}
+                </strong>
+
+            </div>
+
+
+            <div class="registration-detail">
+
+                <span>
+                    Payment Status
+                </span>
+
+                <strong>
+                    {{ registration.payment_status }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+{% endblock %}
