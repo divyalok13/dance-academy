@@ -1,6 +1,8 @@
 import os
 from pathlib import Path
 
+import dj_database_url
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -95,11 +97,19 @@ TEMPLATES = [
 # DATABASE
 # =========================================================
 
+# Local computer:
+#     SQLite is used automatically.
+#
+# Render:
+#     DATABASE_URL is used automatically.
+#
+# This means we do NOT need to manually switch the database.
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    "default": dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        conn_max_age=600,
+    )
 }
 
 
@@ -180,10 +190,6 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # =========================================================
 # PAYMENT SETTINGS
 # =========================================================
-
-# These remain empty locally.
-# Real credentials can be supplied through environment
-# variables later.
 
 RAZORPAY_KEY_ID = os.environ.get(
     "RAZORPAY_KEY_ID",
