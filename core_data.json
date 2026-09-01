@@ -1,0 +1,271 @@
+[
+{
+  "model": "core.danceclass",
+  "pk": 1,
+  "fields": {
+    "name": "Dance",
+    "description": "Flexibility",
+    "age_group": "Teens & Adults",
+    "fee": "999.66",
+    "image": "",
+    "is_active": true,
+    "created_at": "2026-08-29T19:30:09.059Z"
+  }
+},
+{
+  "model": "core.danceclass",
+  "pk": 2,
+  "fields": {
+    "name": "Zumba",
+    "description": "Be Fit",
+    "age_group": "Teens & Adults",
+    "fee": "1000.00",
+    "image": "",
+    "is_active": true,
+    "created_at": "2026-08-29T19:30:41.829Z"
+  }
+},
+{
+  "model": "core.danceclass",
+  "pk": 3,
+  "fields": {
+    "name": "Yoga",
+    "description": "Be Healthy",
+    "age_group": "Teens & Adults",
+    "fee": "999.50",
+    "image": "",
+    "is_active": true,
+    "created_at": "2026-08-29T19:31:10.947Z"
+  }
+},
+{
+  "model": "core.danceclass",
+  "pk": 4,
+  "fields": {
+    "name": "New Dandiya Class",
+    "description": "only for 20 days",
+    "age_group": "teens and adults",
+    "fee": "500.00",
+    "image": "classes/garba-and-dandiya-dance-navratri.jpg",
+    "is_active": true,
+    "created_at": "2026-08-30T04:06:56.217Z"
+  }
+},
+{
+  "model": "core.schedule",
+  "pk": 1,
+  "fields": {
+    "dance_class": 1,
+    "day": "Monday",
+    "start_time": "05:00:00",
+    "end_time": "07:00:00"
+  }
+},
+{
+  "model": "core.schedule",
+  "pk": 2,
+  "fields": {
+    "dance_class": 3,
+    "day": "Wednesday",
+    "start_time": "05:00:00",
+    "end_time": "07:00:00"
+  }
+},
+{
+  "model": "core.schedule",
+  "pk": 3,
+  "fields": {
+    "dance_class": 2,
+    "day": "Friday",
+    "start_time": "05:00:00",
+    "end_time": "07:00:00"
+  }
+},
+{
+  "model": "core.galleryimage",
+  "pk": 1,
+  "fields": {
+    "title": "",
+    "image": "gallery/gallery-01.jpg",
+    "is_active": true,
+    "created_at": "2026-08-29T19:35:29.218Z"
+  }
+},
+{
+  "model": "core.galleryimage",
+  "pk": 2,
+  "fields": {
+    "title": "",
+    "image": "gallery/gallery-02.jpg",
+    "is_active": true,
+    "created_at": "2026-08-29T19:36:33.387Z"
+  }
+},
+{
+  "model": "core.galleryimage",
+  "pk": 3,
+  "fields": {
+    "title": "",
+    "image": "gallery/gallery-03.jpg",
+    "is_active": true,
+    "created_at": "2026-08-29T19:36:45.004Z"
+  }
+},
+{
+  "model": "core.galleryimage",
+  "pk": 4,
+  "fields": {
+    "title": "",
+    "image": "gallery/gallery-05.jpg",
+    "is_active": true,
+    "created_at": "2026-08-29T19:37:03.138Z"
+  }
+},
+{
+  "model": "core.galleryimage",
+  "pk": 5,
+  "fields": {
+    "title": "",
+    "image": "gallery/gallery-04.jpg",
+    "is_active": true,
+    "created_at": "2026-08-29T19:37:23.064Z"
+  }
+},
+{
+  "model": "core.galleryimage",
+  "pk": 6,
+  "fields": {
+    "title": "",
+    "image": "gallery/gallery-06.jpg",
+    "is_active": true,
+    "created_at": "2026-08-29T19:37:37.488Z"
+  }
+},
+{
+  "model": "core.testimonial",
+  "pk": 1,
+  "fields": {
+    "name": "Raunak",
+    "message": "Good Dance Instructor",
+    "rating": 5,
+    "is_active": true,
+    "created_at": "2026-08-29T19:38:54.560Z"
+  }
+},
+{
+  "model": "core.testimonial",
+  "pk": 2,
+  "fields": {
+    "name": "Babali",
+    "message": "Good And safe experience wit all the instructor and friends, very nice dance academy",
+    "rating": 5,
+    "is_active": true,
+    "created_at": "2026-08-29T19:40:16.603Z"
+  }
+},
+{
+  "model": "core.testimonial",
+  "pk": 3,
+  "fields": {
+    "name": "Smriti",
+    "message": "feeling fit and healthy  now, i am 35, before i join this yoga class, i always feels tired but now i feels more energetic and fun.",
+    "rating": 5,
+    "is_active": true,
+    "created_at": "2026-08-29T19:43:06.411Z"
+  }
+},
+{
+  "model": "core.testimonial",
+  "pk": 4,
+  "fields": {
+    "name": "Rani",
+    "message": "very cool instructors",
+    "rating": 5,
+    "is_active": true,
+    "created_at": "2026-08-29T19:43:47.059Z"
+  }
+},
+{
+  "model": "core.testimonial",
+  "pk": 5,
+  "fields": {
+    "name": "Golu",
+    "message": "i've loose 10Kg in 3 months after joinig zumba class, Thankyou ritik sir",
+    "rating": 5,
+    "is_active": true,
+    "created_at": "2026-08-29T19:44:48.107Z"
+  }
+},
+{
+  "model": "core.dandiyaevent",
+  "pk": 2,
+  "fields": {
+    "name": "Dandiya Night 2.0 2026",
+    "description": "",
+    "event_date": "2026-10-15",
+    "start_time": null,
+    "end_time": null,
+    "venue": "WSDC",
+    "group_discount_percent": "0.00",
+    "image": "",
+    "is_active": true,
+    "created_at": "2026-08-31T14:25:40.797Z"
+  }
+},
+{
+  "model": "core.dandiyapass",
+  "pk": 1,
+  "fields": {
+    "event": 2,
+    "name": "Individual Pass",
+    "description": "Entry for 1 Pass",
+    "price": "298.96",
+    "number_of_people": 1,
+    "is_active": true,
+    "display_order": 1,
+    "created_at": "2026-08-31T14:27:39.073Z"
+  }
+},
+{
+  "model": "core.dandiyapass",
+  "pk": 2,
+  "fields": {
+    "event": 2,
+    "name": "Pre-Dandiya Class",
+    "description": "20 days of Pre-Dandiya dance class",
+    "price": "398.96",
+    "number_of_people": 1,
+    "is_active": true,
+    "display_order": 2,
+    "created_at": "2026-08-31T14:29:39.892Z"
+  }
+},
+{
+  "model": "core.dandiyapass",
+  "pk": 3,
+  "fields": {
+    "event": 2,
+    "name": "Couple Pass",
+    "description": "Entry For 2 Persons",
+    "price": "398.99",
+    "number_of_people": 2,
+    "is_active": true,
+    "display_order": 3,
+    "created_at": "2026-08-31T14:30:44.670Z"
+  }
+},
+{
+  "model": "core.dandiyapass",
+  "pk": 4,
+  "fields": {
+    "event": 2,
+    "name": "Combo Pass  - 4 Persons",
+    "description": "Entry for 4 Peoples",
+    "price": "998.97",
+    "number_of_people": 4,
+    "is_active": true,
+    "display_order": 4,
+    "created_at": "2026-08-31T14:32:01.109Z"
+  }
+}
+]
