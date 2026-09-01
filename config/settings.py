@@ -55,6 +55,10 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+
+    # Serve static files in production
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -171,6 +175,19 @@ STATICFILES_DIRS = [
 ]
 
 
+# WhiteNoise compressed static files
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": (
+            "whitenoise.storage.CompressedManifestStaticFilesStorage"
+        ),
+    },
+}
+
+
 # =========================================================
 # MEDIA FILES
 # =========================================================
@@ -208,19 +225,15 @@ RAZORPAY_KEY_SECRET = os.environ.get(
 
 if not DEBUG:
 
-    # HTTPS
     SECURE_SSL_REDIRECT = True
 
-    # Secure cookies
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
 
-    # HTTP Strict Transport Security
     SECURE_HSTS_SECONDS = 31536000
 
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
-    # Additional browser security
     SECURE_CONTENT_TYPE_NOSNIFF = True
 
     X_FRAME_OPTIONS = "DENY"
