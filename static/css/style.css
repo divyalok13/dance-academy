@@ -1451,3 +1451,108 @@ textarea {
         transition-duration: 0.01ms !important;
     }
 }
+
+/* =========================================================
+   DANDIYA PAYMENT
+========================================================= */
+
+.payment-box {
+    max-width: 620px;
+    margin: 35px auto 25px;
+    padding: 35px 25px;
+    text-align: center;
+    background: linear-gradient(145deg, #181019, #100a11);
+    border: 1px solid rgba(246, 183, 60, 0.28);
+    border-radius: 22px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+.payment-box h2 {
+    margin: 8px 0 10px;
+    color: #fff1dc;
+    font-size: 2rem;
+}
+
+.payment-description {
+    max-width: 480px;
+    margin: 0 auto 25px;
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+.payment-qr-wrapper {
+    width: min(360px, 90%);
+    margin: 0 auto 22px;
+    padding: 15px;
+    background: #ffffff;
+    border-radius: 18px;
+}
+
+.payment-qr {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.upi-details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin: 15px auto 22px;
+}
+
+.upi-details span {
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+.upi-details strong {
+    color: #fff1dc;
+    font-size: 1rem;
+    word-break: break-word;
+}
+
+.payment-button,
+.payment-whatsapp-button {
+    width: min(100%, 400px);
+    margin: 8px auto;
+}
+
+.payment-help {
+    margin: 8px auto 18px;
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.5;
+}
+
+.payment-help strong {
+    color: #fff1dc;
+}
+
+.success-note p + p {
+    margin-top: 10px;
+}
+
+
+/* =========================================================
+   PAYMENT MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .payment-box {
+        padding: 28px 16px;
+        border-radius: 18px;
+    }
+
+    .payment-box h2 {
+        font-size: 1.7rem;
+    }
+
+    .payment-qr-wrapper {
+        width: min(330px, 92%);
+        padding: 10px;
+    }
+
+}
