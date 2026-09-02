@@ -45,6 +45,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
+    "cloudinary",
+    "cloudinary_storage",
+
     "core",
 ]
 
@@ -175,10 +178,33 @@ STATICFILES_DIRS = [
 ]
 
 
-# WhiteNoise compressed static files
+# =========================================================
+# CLOUDINARY MEDIA STORAGE
+# =========================================================
+
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": os.environ.get(
+        "CLOUDINARY_CLOUD_NAME",
+        "",
+    ),
+    "API_KEY": os.environ.get(
+        "CLOUDINARY_API_KEY",
+        "",
+    ),
+    "API_SECRET": os.environ.get(
+        "CLOUDINARY_API_SECRET",
+        "",
+    ),
+}
+
+
+# =========================================================
+# STORAGE
+# =========================================================
+
 STORAGES = {
     "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
         "BACKEND": (
