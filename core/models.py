@@ -61,6 +61,7 @@ class Schedule(models.Model):
         FRIDAY = "Friday", "Friday"
         SATURDAY = "Saturday", "Saturday"
         SUNDAY = "Sunday", "Sunday"
+        ALL_DAYS= "All Days", "All Days"
 
     dance_class = models.ForeignKey(
         DanceClass,
