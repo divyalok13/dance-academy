@@ -6,10 +6,50 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
 from django.contrib.auth import get_user_model
+from django.db import connection
+
+from core.models import (
+    DanceClass,
+    GalleryImage,
+    Schedule,
+    Testimonial,
+    TrialBooking,
+    DandiyaEvent,
+    DandiyaPass,
+    DandiyaRegistration,
+)
 
 
 User = get_user_model()
 
+
+# =========================================================
+# DATABASE DIAGNOSTIC
+# =========================================================
+
+print("=========================================================")
+print("DATABASE DIAGNOSTIC")
+print("=========================================================")
+
+print("Database vendor:", connection.vendor)
+print("Database engine:", connection.settings_dict.get("ENGINE"))
+print("Database name:", connection.settings_dict.get("NAME"))
+
+print("DanceClass:", DanceClass.objects.count())
+print("GalleryImage:", GalleryImage.objects.count())
+print("Schedule:", Schedule.objects.count())
+print("Testimonial:", Testimonial.objects.count())
+print("TrialBooking:", TrialBooking.objects.count())
+print("DandiyaEvent:", DandiyaEvent.objects.count())
+print("DandiyaPass:", DandiyaPass.objects.count())
+print("DandiyaRegistration:", DandiyaRegistration.objects.count())
+
+print("=========================================================")
+
+
+# =========================================================
+# ADMIN SETUP
+# =========================================================
 
 username = os.environ.get("ADMIN_USERNAME")
 email = os.environ.get("ADMIN_EMAIL")
