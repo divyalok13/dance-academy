@@ -13,12 +13,17 @@
     >
 
     <title>
-        {% block title %}WSDC | Buxar{% endblock %}
+        {% block title %}WSDC Academy Buxar | Dance, Zumba, Yoga & Fitness{% endblock %}
     </title>
 
     <meta
         name="description"
-        content="WSDC Dance Academy in Buxar — Dance, Fitness and Wellness for everyone."
+        content="{% block meta_description %}WSDC Academy in Buxar, Bihar — Dance, Zumba, Yoga, Choreography, Fitness and Wellness classes for everyone.{% endblock %}"
+    >
+
+    <link
+        rel="canonical"
+        href="https://dance-academy-jwmz.onrender.com{{ request.path }}"
     >
 
     <link
