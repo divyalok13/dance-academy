@@ -117,7 +117,7 @@ class DandiyaRegistrationForm(forms.ModelForm):
             "phone",
             "email",
             "age",
-            "number_of_participants",
+            "number_of_passes",
             "message",
         ]
 
@@ -160,9 +160,9 @@ class DandiyaRegistrationForm(forms.ModelForm):
                 }
             ),
 
-            "number_of_participants": forms.NumberInput(
+            "number_of_passes": forms.NumberInput(
                 attrs={
-                    "placeholder": "Number of Participants",
+                    "placeholder": "Number of Passes",
                     "class": "form-control",
                     "min": 1,
                     "max": 100,
@@ -217,14 +217,14 @@ class DandiyaRegistrationForm(forms.ModelForm):
 
         return age
 
-    def clean_number_of_participants(self):
+    def clean_number_of_passes(self):
         number = self.cleaned_data.get(
-            "number_of_participants"
+            "number_of_passes"
         )
 
         if number < 1 or number > 100:
             raise forms.ValidationError(
-                "Participants must be between 1 and 100."
+                "Passes must be between 1 and 100."
             )
 
         return number

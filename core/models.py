@@ -391,7 +391,7 @@ class DandiyaRegistration(models.Model):
         blank=True,
     )
 
-    number_of_participants = models.PositiveIntegerField(
+    number_of_passes = models.PositiveIntegerField(
         default=1,
     )
 

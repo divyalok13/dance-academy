@@ -303,7 +303,7 @@ class DandiyaRegistrationAdmin(admin.ModelAdmin):
         "phone",
         "event",
         "dandiya_pass",
-        "number_of_participants",
+        "number_of_passes",
         "total_amount",
         "payment_status",
         "entry_code",

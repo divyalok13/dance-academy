@@ -142,7 +142,7 @@ def dandiya_registration(request, event_id):
 
             registration.total_amount = (
                 registration.dandiya_pass.price
-                * registration.number_of_participants
+                * registration.number_of_passes
             )
 
             # =============================================
