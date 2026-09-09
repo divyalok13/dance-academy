@@ -220,7 +220,7 @@ Registration Successful | WSDC
                     <!-- PAY NOW -->
 
                     <a
-                        href="upi://pay?pa=wsdc4ab@okhdfcbank&pn=WSDC&am={{ registration.total_amount|floatformat:2 }}&cu=INR&tn=WSDC%20Dandiya%20{{ registration.entry_code }}"
+                        href="upi://pay?pa=wsdc4ab@okhdfcbank&pn=WSDC&tr={{ registration.entry_code|urlencode }}&am={{ registration.total_amount|floatformat:2 }}&cu=INR&tn=WSDC%20Dandiya%20{{ registration.entry_code|urlencode }}"
                         class="btn btn-primary payment-button"
                     >
                         💳 Pay Now with UPI
