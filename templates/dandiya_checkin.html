@@ -553,6 +553,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     let scanSubmitted = false;
+    let scannerRunning = false;
+    let restarting = false;
 
 
     const scanner = new Html5Qrcode("qr-reader");
@@ -589,14 +591,17 @@ document.addEventListener("DOMContentLoaded", function () {
             This prevents the scanner from detecting the same
             QR code repeatedly while Django processes it.
         */
+
         scanner.stop()
             .then(function () {
 
+                scannerRunning = false;
                 checkinForm.submit();
 
             })
             .catch(function () {
 
+                scannerRunning = false;
                 checkinForm.submit();
 
             });
@@ -614,7 +619,143 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+    function makeVideoVisible() {
+
+        const video = readerElement.querySelector("video");
+
+        if (!video) {
+            return false;
+        }
+
+
+        /*
+            Android Chrome can sometimes start the camera stream
+            but fail to begin rendering the video automatically.
+        */
+
+        video.setAttribute("autoplay", "");
+        video.setAttribute("muted", "");
+        video.setAttribute("playsinline", "");
+
+        video.autoplay = true;
+        video.muted = true;
+        video.playsInline = true;
+
+
+        const playPromise = video.play();
+
+        if (playPromise) {
+
+            playPromise.catch(function (error) {
+
+                console.log(
+                    "Camera video play waiting:",
+                    error
+                );
+
+            });
+
+        }
+
+
+        return true;
+
+    }
+
+
+    function cameraIsRendering() {
+
+        const video = readerElement.querySelector("video");
+
+        if (!video) {
+            return false;
+        }
+
+
+        return (
+            video.readyState >= 2 &&
+            video.videoWidth > 0 &&
+            video.videoHeight > 0
+        );
+
+    }
+
+
+    function restartCamera() {
+
+        if (
+            scanSubmitted ||
+            restarting ||
+            !scannerRunning
+        ) {
+            return;
+        }
+
+
+        restarting = true;
+
+
+        statusElement.textContent =
+            "📷 Restarting camera...";
+
+
+        scanner.stop()
+            .then(function () {
+
+                scannerRunning = false;
+
+
+                return scanner.start(
+                    window.wsdcCameraId,
+                    {
+                        fps: 10,
+                        qrbox: {
+                            width: 250,
+                            height: 250
+                        }
+                    },
+                    onScanSuccess,
+                    onScanFailure
+                );
+
+            })
+            .then(function () {
+
+                scannerRunning = true;
+                restarting = false;
+
+
+                setTimeout(function () {
+
+                    makeVideoVisible();
+
+                    statusElement.textContent =
+                        "📷 Camera ready. Point it at the customer's QR code.";
+
+                }, 200);
+
+            })
+            .catch(function (error) {
+
+                console.error(
+                    "Camera restart error:",
+                    error
+                );
+
+                scannerRunning = false;
+                restarting = false;
+
+
+                statusElement.textContent =
+                    "❌ Camera restart failed. Please refresh or use manual entry.";
+
+            });
+
+    }
+
+
     Html5Qrcode.getCameras()
+
         .then(function (cameras) {
 
             if (!cameras || cameras.length === 0) {
@@ -657,6 +798,14 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
+            /*
+                Store the selected camera so the recovery function
+                can restart the same camera.
+            */
+
+            window.wsdcCameraId = cameraId;
+
+
             scanner.start(
                 cameraId,
                 {
@@ -669,12 +818,52 @@ document.addEventListener("DOMContentLoaded", function () {
                 onScanSuccess,
                 onScanFailure
             )
+
             .then(function () {
+
+                scannerRunning = true;
+
 
                 statusElement.textContent =
                     "📷 Camera ready. Point it at the customer's QR code.";
 
+
+                /*
+                    Give Android Chrome a moment to create the
+                    video element, then explicitly start playback.
+                */
+
+                setTimeout(function () {
+
+                    makeVideoVisible();
+
+                }, 200);
+
+
+                /*
+                    If the camera technically started but the
+                    video is not rendering, recover automatically.
+                */
+
+                setTimeout(function () {
+
+                    makeVideoVisible();
+
+
+                    if (!cameraIsRendering()) {
+
+                        console.log(
+                            "Camera started but preview is not rendering. Restarting..."
+                        );
+
+                        restartCamera();
+
+                    }
+
+                }, 1800);
+
             })
+
             .catch(function (error) {
 
                 console.error(
@@ -689,6 +878,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
         })
+
         .catch(function (error) {
 
             console.error(
@@ -701,6 +891,74 @@ document.addEventListener("DOMContentLoaded", function () {
                 "❌ Unable to access camera. Please use manual entry.";
 
         });
+
+
+    /*
+        Android Chrome can suspend the camera when the user
+        leaves the browser and later returns.
+
+        Check the video again when the page becomes visible.
+    */
+
+    document.addEventListener(
+        "visibilitychange",
+        function () {
+
+            if (
+                document.visibilityState !== "visible" ||
+                scanSubmitted
+            ) {
+                return;
+            }
+
+
+            setTimeout(function () {
+
+                if (!cameraIsRendering()) {
+
+                    restartCamera();
+
+                } else {
+
+                    makeVideoVisible();
+
+                }
+
+            }, 700);
+
+        }
+    );
+
+
+    /*
+        Also check when Chrome regains focus.
+    */
+
+    window.addEventListener(
+        "focus",
+        function () {
+
+            if (scanSubmitted) {
+                return;
+            }
+
+
+            setTimeout(function () {
+
+                if (!cameraIsRendering()) {
+
+                    restartCamera();
+
+                } else {
+
+                    makeVideoVisible();
+
+                }
+
+            }, 500);
+
+        }
+    );
 
 });
 
