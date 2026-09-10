@@ -838,7 +838,7 @@ def dandiya_checkin(request):
 
                 registration = (
                     DandiyaRegistration.objects
-                    .select_for_update()
+                    .select_for_update(of=("self",))
                     .select_related(
                         "event",
                         "dandiya_pass",
