@@ -1646,3 +1646,53 @@ textarea {
     }
 
 }
+
+/* =========================================================
+   DANDIYA QR CAMERA SCANNER
+========================================================= */
+
+#qr-reader {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto 25px;
+    overflow: hidden;
+    border: 1px solid rgba(246, 183, 60, 0.25);
+    border-radius: 18px;
+    background: #050409;
+}
+
+#qr-reader__scan_region {
+    width: 100% !important;
+    min-height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #050409;
+}
+
+#qr-reader__scan_region video {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 250px;
+    object-fit: cover;
+}
+
+#qr-reader__dashboard {
+    padding: 12px;
+    text-align: center;
+}
+
+#qr-reader__dashboard button {
+    margin: 5px;
+    padding: 8px 14px;
+    border: 1px solid rgba(246, 183, 60, 0.35);
+    border-radius: 999px;
+    background: rgba(246, 183, 60, 0.10);
+    color: var(--gold-light);
+    cursor: pointer;
+}
+
+#qr-reader__dashboard span {
+    color: var(--muted);
+}
