@@ -555,6 +555,32 @@ document.addEventListener("DOMContentLoaded", function () {
     let scanSubmitted = false;
 
 
+    /*
+    Android Chrome can sometimes start the camera stream
+    but delay displaying the video preview.
+    */
+    function wakeCameraPreview() {
+
+    const video = document.querySelector("#qr-reader video");
+
+    if (!video) {
+        return;
+    }
+
+    video.autoplay = true;
+    video.muted = true;
+    video.playsInline = true;
+
+    const playPromise = video.play();
+
+    if (playPromise) {
+        playPromise.catch(function (error) {
+            console.log("Camera preview waiting:", error);
+        });
+    }
+    }
+
+
     const scanner = new Html5Qrcode("qr-reader");
 
 
@@ -674,6 +700,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 statusElement.textContent =
                     "📷 Camera ready. Point it at the customer's QR code.";
 
+                /*
+                    Give Android Chrome a little time to create the
+                    video element, then explicitly start playback.
+                */
+                setTimeout(wakeCameraPreview, 200);
+                setTimeout(wakeCameraPreview, 800);
+                setTimeout(wakeCameraPreview, 1500);
+
             })
             .catch(function (error) {
 
@@ -701,6 +735,46 @@ document.addEventListener("DOMContentLoaded", function () {
                 "❌ Unable to access camera. Please use manual entry.";
 
         });
+
+        /*
+        When Android Chrome returns from another app,
+        wake the existing camera preview.
+
+        We deliberately do NOT stop or restart the camera.
+        */
+        document.addEventListener(
+            "visibilitychange",
+            function () {
+
+                if (
+                    document.visibilityState === "visible" &&
+                    !scanSubmitted
+                ) {
+
+                    setTimeout(wakeCameraPreview, 300);
+                    setTimeout(wakeCameraPreview, 1000);
+
+                }
+
+            }
+        );
+
+
+        /*
+            Also wake the preview when Chrome regains focus.
+        */
+        window.addEventListener(
+            "focus",
+            function () {
+
+                if (scanSubmitted) {
+                    return;
+                }
+
+                setTimeout(wakeCameraPreview, 300);
+
+            }
+        );
 
 });
 
