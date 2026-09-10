@@ -1,0 +1,411 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dandiya Coupon | WSDC
+{% endblock %}
+
+{% block content %}
+
+<section class="section success-section">
+
+    <div class="container">
+
+        <div class="success-content">
+
+            {% if coupon_valid and registration %}
+
+                <!-- =====================================================
+                     VALID / PAID COUPON
+                ====================================================== -->
+
+                <div class="dandiya-coupon">
+
+
+                    <!-- =========================
+                         COUPON HEADER
+                    ========================== -->
+
+                    <div class="coupon-header">
+
+                        <p class="section-label">
+                            WSDC DANDIYA NIGHT
+                        </p>
+
+                        <h1>
+                            🎟️ Dandiya Entry Coupon
+                        </h1>
+
+                        <div class="coupon-valid-badge">
+                            🟢 PAYMENT VERIFIED
+                        </div>
+
+                    </div>
+
+
+                    <!-- =========================
+                         EVENT DETAILS
+                    ========================== -->
+
+                    <div class="coupon-event">
+
+                        <h2>
+                            {{ registration.event.name }}
+                        </h2>
+
+                        <p>
+                            📅
+                            {{ registration.event.event_date|date:"j F Y" }}
+                        </p>
+
+
+                        {% if registration.event.start_time %}
+
+                            <p>
+                                🕐
+                                {{ registration.event.start_time|time:"g:i A" }}
+
+                                {% if registration.event.end_time %}
+
+                                    -
+                                    {{ registration.event.end_time|time:"g:i A" }}
+
+                                {% endif %}
+
+                            </p>
+
+                        {% endif %}
+
+
+                        <p>
+                            📍
+                            {{ registration.event.venue }}
+                        </p>
+
+                    </div>
+
+
+                    <!-- =========================
+                         QR CODE
+                    ========================== -->
+
+                    <div class="coupon-qr-section">
+
+                        <p>
+                            Scan this QR code at the entrance
+                        </p>
+
+                        <div class="coupon-qr">
+
+                            <img
+                                src="data:image/png;base64,{{ qr_base64 }}"
+                                alt="Unique WSDC Dandiya Entry QR Code"
+                            >
+
+                        </div>
+
+                        <p class="coupon-qr-note">
+                            This QR code is unique to this registration.
+                        </p>
+
+                    </div>
+
+
+                    <!-- =========================
+                         ENTRY CODE
+                    ========================== -->
+
+                    <div class="entry-code-box">
+
+                        <span class="entry-code-label">
+                            ENTRY CODE
+                        </span>
+
+                        <strong class="entry-code">
+                            {{ registration.entry_code }}
+                        </strong>
+
+                        <p>
+                            Keep this code available as a backup
+                            if the QR scanner cannot be used.
+                        </p>
+
+                    </div>
+
+
+                    <!-- =========================
+                         CUSTOMER DETAILS
+                    ========================== -->
+
+                    <div class="registration-summary">
+
+
+                        <div class="registration-detail">
+
+                            <span>
+                                Name
+                            </span>
+
+                            <strong>
+                                {{ registration.name }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="registration-detail">
+
+                            <span>
+                                Pass
+                            </span>
+
+                            <strong>
+                                {{ registration.dandiya_pass.name }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="registration-detail">
+
+                            <span>
+                                Number of Passes
+                            </span>
+
+                            <strong>
+                                {{ registration.number_of_passes }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="registration-detail">
+
+                            <span>
+                                Total Paid
+                            </span>
+
+                            <strong>
+                                ₹{{ registration.total_amount|floatformat:0 }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="registration-detail">
+
+                            <span>
+                                Payment Status
+                            </span>
+
+                            <strong>
+                                {{ registration.payment_status }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="registration-detail">
+
+                            <span>
+                                Registration Date
+                            </span>
+
+                            <strong>
+                                {{ registration.created_at|date:"j F Y, g:i A" }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =========================
+                         ENTRY INSTRUCTIONS
+                    ========================== -->
+
+                    <div class="success-note">
+
+                        <strong>
+                            🎟️ Entry Instructions
+                        </strong>
+
+                        <p>
+                            Show this coupon or the QR code at
+                            the WSDC Dandiya Night entrance.
+                        </p>
+
+                        <p>
+                            This ticket can be used for entry only once.
+                        </p>
+
+                        <p>
+                            After successful check-in, the QR code
+                            cannot be used again.
+                        </p>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         PDF COUPON BUTTON
+                    ================================================== -->
+
+                    <div
+                        style="
+                            width: 100%;
+                            text-align: center;
+                            margin-top: 30px;
+                            margin-bottom: 15px;
+                        "
+                    >
+
+                        <a
+                            href="{% url 'dandiya_coupon_pdf' registration.coupon_token %}"
+                            class="btn btn-primary"
+                            style="
+                                display: inline-block;
+                                visibility: visible;
+                                opacity: 1;
+                                position: relative;
+                                z-index: 10;
+                            "
+                        >
+                            📄 Download PDF Coupon
+                        </a>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         WHATSAPP SHARE
+                    ================================================== -->
+
+                    <div
+                        style="
+                            width: 100%;
+                            text-align: center;
+                            margin-top: 15px;
+                            margin-bottom: 30px;
+                        "
+                    >
+
+                        <a
+                            href="https://wa.me/?text=Hi%20WSDC!%20%F0%9F%8E%89%0A%0AHere%20is%20my%20verified%20Dandiya%20Entry%20Coupon:%0A%0A{{ coupon_url|urlencode }}%0A%0ASee%20you%20at%20Dandiya%20Night!%20%F0%9F%AA%A9"
+                            target="_blank"
+                            rel="noopener"
+                            class="btn btn-secondary"
+                            style="
+                                display: inline-block;
+                                visibility: visible;
+                                opacity: 1;
+                                position: relative;
+                                z-index: 10;
+                            "
+                        >
+                            💬 Share Coupon on WhatsApp
+                        </a>
+
+                    </div>
+
+
+                </div>
+
+
+            {% else %}
+
+                <!-- =====================================================
+                     PAYMENT NOT VERIFIED
+                ====================================================== -->
+
+                <div>
+
+                    <p class="section-label">
+                        WSDC DANDIYA NIGHT
+                    </p>
+
+                    <h1>
+                        🎟️ Coupon Not Active Yet
+                    </h1>
+
+
+                    {% if registration %}
+
+                        <p class="success-message">
+
+                            Thank you,
+                            <strong>{{ registration.name }}</strong>.
+
+                            Your registration exists, but your payment
+                            has not yet been verified by WSDC.
+
+                        </p>
+
+
+                        <div class="success-note">
+
+                            <strong>
+                                ⏳ Payment Status:
+                                {{ registration.payment_status }}
+                            </strong>
+
+                            <p>
+                                Your Dandiya entry coupon will become
+                                valid after the WSDC team verifies your payment.
+                            </p>
+
+                            <p>
+                                Please complete your payment using the
+                                official WSDC payment instructions.
+                            </p>
+
+                            <p>
+                                Your entry code will remain hidden until
+                                your payment has been verified.
+                            </p>
+
+                        </div>
+
+
+                    {% else %}
+
+                        <p class="success-message">
+                            This coupon could not be found.
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- =====================================================
+                 NAVIGATION
+            ====================================================== -->
+
+            <div class="hero-buttons">
+
+                <a
+                    href="{% url 'home' %}#dandiya"
+                    class="btn btn-primary"
+                >
+                    🪩 Back to Dandiya Night
+                </a>
+
+                <a
+                    href="{% url 'home' %}"
+                    class="btn btn-secondary"
+                >
+                    🏠 Back to Home
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

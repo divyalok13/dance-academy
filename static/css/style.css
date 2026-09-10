@@ -1556,3 +1556,93 @@ textarea {
     }
 
 }
+
+/* =========================================================
+   DANDIYA DIGITAL COUPON
+========================================================= */
+
+.dandiya-coupon {
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 30px;
+    border-radius: 24px;
+    background: #ffffff;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+    text-align: center;
+}
+
+.coupon-header h1 {
+    margin-bottom: 15px;
+}
+
+.coupon-valid-badge {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.coupon-event {
+    margin: 25px 0;
+    padding: 20px;
+    border-radius: 16px;
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.coupon-event h2 {
+    margin-bottom: 12px;
+}
+
+.coupon-event p {
+    margin: 6px 0;
+}
+
+.coupon-qr-section {
+    margin: 30px 0;
+}
+
+.coupon-qr {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    margin: 15px auto;
+    background: #ffffff;
+    border-radius: 18px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.coupon-qr img {
+    display: block;
+    width: 260px;
+    height: 260px;
+    max-width: 70vw;
+    object-fit: contain;
+}
+
+.coupon-qr-note {
+    font-size: 0.9rem;
+    opacity: 0.75;
+}
+
+.dandiya-coupon .registration-summary {
+    margin-top: 25px;
+    text-align: left;
+}
+
+@media (max-width: 600px) {
+
+    .dandiya-coupon {
+        padding: 20px;
+        border-radius: 18px;
+    }
+
+    .coupon-qr img {
+        width: 220px;
+        height: 220px;
+    }
+
+}

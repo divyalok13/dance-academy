@@ -28,6 +28,10 @@ Registration Successful | WSDC
 
             {% if registration %}
 
+                <!-- =========================
+                     CUSTOMER MESSAGE
+                ========================== -->
+
                 <p class="success-message">
                     Thank you,
                     <strong>{{ registration.name }}</strong>.
@@ -35,31 +39,81 @@ Registration Successful | WSDC
                 </p>
 
 
-                <!-- =========================
-                     ENTRY CODE
-                ========================== -->
+                <!-- =====================================================
+                     PAID REGISTRATION
+                ====================================================== -->
 
-                <div class="entry-code-box">
+                {% if registration.payment_status == "Paid" %}
 
-                    <span class="entry-code-label">
-                        YOUR ENTRY CODE
-                    </span>
+                    <!-- =========================
+                         ENTRY CODE
+                    ========================== -->
 
-                    <strong class="entry-code">
-                        {{ registration.entry_code }}
-                    </strong>
+                    <div class="entry-code-box">
 
-                    <p>
-                        Keep this code safe. You may need it for
-                        event entry and future communication.
-                    </p>
+                        <span class="entry-code-label">
+                            YOUR ENTRY CODE
+                        </span>
 
-                </div>
+                        <strong class="entry-code">
+                            {{ registration.entry_code }}
+                        </strong>
+
+                        <p>
+                            Keep this code safe. You may need it for
+                            event entry and future communication.
+                        </p>
 
 
-                <!-- =========================
+                        <!-- =========================
+                             VIEW COUPON
+                        ========================== -->
+
+                        <a
+                            href="{% url 'dandiya_coupon' registration.coupon_token %}"
+                            class="btn btn-primary"
+                        >
+                            🎟️ View My Entry Coupon
+                        </a>
+
+                    </div>
+
+
+                <!-- =====================================================
+                     PENDING / UNPAID REGISTRATION
+                ====================================================== -->
+
+                {% else %}
+
+                    <!-- =========================
+                         COUPON NOT AVAILABLE YET
+                    ========================== -->
+
+                    <div class="success-note">
+
+                        <strong>
+                            🎟️ ENTRY COUPON
+                        </strong>
+
+                        <p>
+                            Your entry code and event coupon will become
+                            available after your payment has been verified
+                            by the WSDC team.
+                        </p>
+
+                        <p>
+                            Please complete your payment below and send
+                            the payment confirmation to WSDC on WhatsApp.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+
+                <!-- =====================================================
                      REGISTRATION DETAILS
-                ========================== -->
+                ====================================================== -->
 
                 <div class="registration-summary">
 
@@ -169,119 +223,179 @@ Registration Successful | WSDC
                 </div>
 
 
-                <!-- =========================
+                <!-- =====================================================
                      PAYMENT SECTION
-                ========================== -->
+                     ONLY SHOWN WHILE PAYMENT IS NOT PAID
+                ====================================================== -->
 
-                <div class="payment-box">
+                {% if registration.payment_status != "Paid" %}
 
-                    <p class="section-label">
-                        💳 COMPLETE YOUR PAYMENT
-                    </p>
+                    <div class="payment-box">
 
-                    <h2>
-                        Pay ₹{{ registration.total_amount|floatformat:0 }}
-                    </h2>
+                        <p class="section-label">
+                            💳 COMPLETE YOUR PAYMENT
+                        </p>
 
-                    <p class="payment-description">
-                        Scan the QR code using any UPI app
-                        to complete your Dandiya registration payment.
-                    </p>
+                        <h2>
+                            Pay ₹{{ registration.total_amount|floatformat:0 }}
+                        </h2>
+
+                        <p class="payment-description">
+                            Scan the official WSDC QR code using
+                            Google Pay, PhonePe, Paytm or any other
+                            UPI app to complete your payment.
+                        </p>
 
 
-                    <!-- QR CODE -->
+                        <!-- =========================
+                             PAYMENT QR CODE
+                        ========================== -->
 
-                    <div class="payment-qr-wrapper">
+                        <div class="payment-qr-wrapper">
 
-                        <img
-                            src="{% static 'images/dandiya_payment_qr.jpg' %}"
-                            alt="WSDC Dandiya Payment QR Code"
-                            class="payment-qr"
+                            <img
+                                src="{% static 'images/dandiya_payment_qr.jpg' %}"
+                                alt="Official WSDC Dandiya Payment QR Code"
+                                class="payment-qr"
+                            >
+
+                        </div>
+
+
+                        <!-- =========================
+                             UPI DETAILS
+                        ========================== -->
+
+                        <div class="upi-details">
+
+                            <span>
+                                UPI ID
+                            </span>
+
+                            <strong>
+                                wsdc4ab@okhdfcbank
+                            </strong>
+
+                        </div>
+
+
+                        <!-- =========================
+                             PAYMENT INSTRUCTIONS
+                        ========================== -->
+
+                        <div class="payment-help">
+
+                            <strong>
+                                📱 How to pay
+                            </strong>
+
+                            <p>
+                                1. Open your UPI app and scan the QR code above.
+                            </p>
+
+                            <p>
+                                2. Enter exactly
+                                <strong>
+                                    ₹{{ registration.total_amount|floatformat:0 }}
+                                </strong>
+                                as the payment amount.
+                            </p>
+
+                            <p>
+                                3. Complete the payment and keep your
+                                payment confirmation.
+                            </p>
+
+                            <p>
+                                4. Send your payment confirmation to WSDC
+                                on WhatsApp using the button below.
+                            </p>
+
+                        </div>
+
+
+                        <!-- =========================
+                             WHATSAPP CONFIRMATION
+                        ========================== -->
+
+                        <a
+                            href="https://wa.me/917643860013?text=Hi%20WSDC%2C%20I%20have%20completed%20my%20Dandiya%20payment.%0A%0AName%3A%20{{ registration.name|urlencode }}%0AAmount%3A%20%E2%82%B9{{ registration.total_amount|floatformat:0 }}."
+                            target="_blank"
+                            rel="noopener"
+                            class="btn btn-secondary payment-whatsapp-button"
                         >
+                            💬 Send Payment Confirmation
+                        </a>
 
                     </div>
 
 
-                    <!-- UPI ID -->
+                    <!-- =========================
+                         PAYMENT NOTE
+                    ========================== -->
 
-                    <div class="upi-details">
-
-                        <span>
-                            UPI ID
-                        </span>
+                    <div class="success-note">
 
                         <strong>
-                            wsdc4ab@okhdfcbank
+                            💳 Payment Status:
+                            {{ registration.payment_status }}
                         </strong>
+
+                        <p>
+                            Please complete the payment using the official
+                            WSDC QR code above.
+                        </p>
+
+                        <p>
+                            Your payment will remain
+                            <strong>Pending</strong>
+                            until it is verified by the WSDC team.
+                        </p>
+
+                        <p>
+                            Your entry code and coupon will become available
+                            after successful payment verification.
+                        </p>
 
                     </div>
 
-
-                    <!-- PAY NOW -->
-
-                    <a
-                        href="upi://pay?pa=wsdc4ab@okhdfcbank&pn=WSDC&tr={{ registration.entry_code|urlencode }}&cu=INR&tn=WSDC%20Dandiya%20{{ registration.entry_code|urlencode }}"
-                        class="btn btn-primary payment-button"
-                    >
-                        💳 Pay Now with UPI
-                    </a>
+                {% endif %}
 
 
-                    <p class="payment-help">
-                        Google Pay will open with the WSDC payment account.
-                        Please enter exactly
-                        <strong>₹{{ registration.total_amount|floatformat:0 }}</strong>
-                        before completing the payment.
-                    </p>
+                <!-- =====================================================
+                     PAID CONFIRMATION
+                     ONLY SHOWN AFTER PAYMENT IS VERIFIED
+                ====================================================== -->
 
+                {% if registration.payment_status == "Paid" %}
 
-                    <!-- WHATSAPP CONFIRMATION -->
+                    <div class="success-note">
 
-                    <a
-                        href="https://wa.me/917643860013?text=Hi%20WSDC%2C%20I%20have%20completed%20my%20Dandiya%20payment.%0A%0AName%3A%20{{ registration.name|urlencode }}%0AEntry%20Code%3A%20{{ registration.entry_code|urlencode }}%0AAmount%3A%20%E2%82%B9{{ registration.total_amount|floatformat:0 }}."
-                        target="_blank"
-                        rel="noopener"
-                        class="btn btn-secondary payment-whatsapp-button"
-                    >
-                        💬 Send Payment Confirmation
-                    </a>
+                        <strong>
+                            ✅ Payment Verified
+                        </strong>
 
-                </div>
+                        <p>
+                            Your payment has been verified by the WSDC team.
+                        </p>
 
+                        <p>
+                            Your entry coupon is now active.
+                            Please keep it safe and show it at the
+                            event entrance.
+                        </p>
 
-                <!-- =========================
-                     PAYMENT NOTE
-                ========================== -->
+                    </div>
 
-                <div class="success-note">
-
-                    <strong>
-                        💳 Payment Status:
-                        {{ registration.payment_status }}
-                    </strong>
-
-                    <p>
-                        Please complete the payment using the QR code
-                        or UPI button above. If you use the UPI button,
-                        enter the exact amount shown above in your UPI app.
-                        After payment, send your payment confirmation
-                        to WSDC on WhatsApp.
-                    </p>
-
-                    <p>
-                        Your payment will remain
-                        <strong>Pending</strong>
-                        until it is verified by the WSDC team.
-                    </p>
-
-                </div>
+                {% endif %}
 
 
             {% else %}
 
-                <!-- =========================
+                <!-- =====================================================
                      FALLBACK
-                ========================== -->
+                     SHOWN ONLY IF REGISTRATION IS NOT AVAILABLE
+                ====================================================== -->
 
                 <p class="success-message">
                     Your registration has been received successfully. 🎉
@@ -303,9 +417,9 @@ Registration Successful | WSDC
             {% endif %}
 
 
-            <!-- =========================
+            <!-- =====================================================
                  NAVIGATION
-            ========================== -->
+            ====================================================== -->
 
             <div class="hero-buttons">
 

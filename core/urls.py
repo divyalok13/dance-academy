@@ -48,6 +48,22 @@ urlpatterns = [
     ),
 
     # =====================================================
+    # DANDIYA COUPON
+    # =====================================================
+
+    path(
+        "dandiya/coupon/<uuid:coupon_token>/",
+        views.dandiya_coupon,
+        name="dandiya_coupon",
+    ),
+
+    path(
+        "dandiya/coupon/<uuid:coupon_token>/pdf/",
+        views.dandiya_coupon_pdf,
+        name="dandiya_coupon_pdf",
+    ),
+
+    # =====================================================
     # DANDIYA CHECK-IN
     # =====================================================
 

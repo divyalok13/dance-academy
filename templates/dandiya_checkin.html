@@ -21,21 +21,64 @@ Dandiya Check-In | WSDC
             </h1>
 
             <p>
-                Enter the attendee's entry code to verify their registration.
+                Scan the attendee's QR code or enter their entry code manually.
             </p>
 
         </div>
 
 
         <!-- =========================
-             CHECK-IN FORM
+             QR SCANNER
         ========================== -->
 
         <div class="booking-form-wrapper">
 
+            <div
+                id="qr-reader"
+                style="
+                    width: 100%;
+                    max-width: 500px;
+                    margin: 0 auto 25px;
+                "
+            >
+            </div>
+
+
+            <div
+                id="scanner-status"
+                style="
+                    text-align: center;
+                    margin-bottom: 20px;
+                    font-weight: 600;
+                "
+            >
+                📷 Point the camera at the customer's QR code.
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             MANUAL ENTRY
+        ========================== -->
+
+        <div class="booking-form-wrapper">
+
+            <h2
+                style="
+                    text-align: center;
+                    margin-bottom: 20px;
+                "
+            >
+                Or Enter Entry Code
+            </h2>
+
+
             <form
                 method="post"
                 class="booking-form"
+                id="checkin-form"
+                autocomplete="off"
             >
 
                 {% csrf_token %}
@@ -60,7 +103,7 @@ Dandiya Check-In | WSDC
                     type="submit"
                     class="btn btn-primary"
                 >
-                    🔍 Verify Entry
+                    🔍 Verify & Allow Entry
                 </button>
 
             </form>
@@ -69,44 +112,73 @@ Dandiya Check-In | WSDC
 
 
         <!-- =========================
-             REGISTRATION RESULT
+             INVALID CODE
         ========================== -->
 
-        {% if checked and registration %}
+        {% if checkin_result == "invalid" %}
 
         <div class="registration-summary">
 
             <div class="registration-detail">
 
                 <span>
-                    Status
+                    Result
                 </span>
 
                 <strong>
-                    {% if registration.payment_status == "Paid" %}
-                        ✅ PAID — ENTRY VALID
-                    {% elif registration.payment_status == "Pending" %}
-                        ⏳ PAYMENT PENDING
-                    {% else %}
-                        ❌ PAYMENT FAILED
-                    {% endif %}
+                    ❌ INVALID ENTRY CODE
                 </strong>
 
             </div>
-
 
             <div class="registration-detail">
 
                 <span>
-                    Entry Code
+                    Action
                 </span>
 
                 <strong>
-                    {{ registration.entry_code }}
+                    DO NOT ALLOW ENTRY
                 </strong>
 
             </div>
 
+        </div>
+
+        {% endif %}
+
+
+        <!-- =========================
+             PAYMENT PENDING
+        ========================== -->
+
+        {% if checkin_result == "payment_pending" and registration %}
+
+        <div class="registration-summary">
+
+            <div class="registration-detail">
+
+                <span>
+                    Result
+                </span>
+
+                <strong>
+                    ⏳ PAYMENT NOT VERIFIED
+                </strong>
+
+            </div>
+
+            <div class="registration-detail">
+
+                <span>
+                    Action
+                </span>
+
+                <strong>
+                    ❌ DO NOT ALLOW ENTRY
+                </strong>
+
+            </div>
 
             <div class="registration-detail">
 
@@ -120,71 +192,17 @@ Dandiya Check-In | WSDC
 
             </div>
 
-
             <div class="registration-detail">
 
                 <span>
-                    Phone
+                    Entry Code
                 </span>
 
                 <strong>
-                    {{ registration.phone }}
+                    {{ registration.entry_code }}
                 </strong>
 
             </div>
-
-
-            <div class="registration-detail">
-
-                <span>
-                    Event
-                </span>
-
-                <strong>
-                    {{ registration.event.name }}
-                </strong>
-
-            </div>
-
-
-            <div class="registration-detail">
-
-                <span>
-                    Pass
-                </span>
-
-                <strong>
-                    {{ registration.dandiya_pass.name }}
-                </strong>
-
-            </div>
-
-
-            <div class="registration-detail">
-
-                <span>
-                    Passes
-                </span>
-
-                <strong>
-                    {{ registration.number_of_passes }}
-                </strong>
-
-            </div>
-
-
-            <div class="registration-detail">
-
-                <span>
-                    Total Amount
-                </span>
-
-                <strong>
-                    ₹{{ registration.total_amount|floatformat:0 }}
-                </strong>
-
-            </div>
-
 
             <div class="registration-detail">
 
@@ -200,11 +218,492 @@ Dandiya Check-In | WSDC
 
         </div>
 
+        {% endif %}
+
+
+        <!-- =========================
+             PAYMENT FAILED
+        ========================== -->
+
+        {% if checkin_result == "payment_failed" and registration %}
+
+        <div class="registration-summary">
+
+            <div class="registration-detail">
+
+                <span>
+                    Result
+                </span>
+
+                <strong>
+                    ❌ PAYMENT FAILED
+                </strong>
+
+            </div>
+
+            <div class="registration-detail">
+
+                <span>
+                    Action
+                </span>
+
+                <strong>
+                    ❌ DO NOT ALLOW ENTRY
+                </strong>
+
+            </div>
+
+            <div class="registration-detail">
+
+                <span>
+                    Name
+                </span>
+
+                <strong>
+                    {{ registration.name }}
+                </strong>
+
+            </div>
+
+            <div class="registration-detail">
+
+                <span>
+                    Entry Code
+                </span>
+
+                <strong>
+                    {{ registration.entry_code }}
+                </strong>
+
+            </div>
+
+            <div class="registration-detail">
+
+                <span>
+                    Payment Status
+                </span>
+
+                <strong>
+                    {{ registration.payment_status }}
+                </strong>
+
+            </div>
+
+        </div>
 
         {% endif %}
+
+
+        <!-- =========================
+             ALREADY USED
+        ========================== -->
+
+        {% if checkin_result == "already_used" and registration %}
+
+        <div class="registration-summary">
+
+            <div class="registration-detail">
+
+                <span>
+                    Result
+                </span>
+
+                <strong>
+                    🔴 ENTRY ALREADY USED
+                </strong>
+
+            </div>
+
+            <div class="registration-detail">
+
+                <span>
+                    Action
+                </span>
+
+                <strong>
+                    ❌ DO NOT ALLOW ENTRY
+                </strong>
+
+            </div>
+
+            <div class="registration-detail">
+
+                <span>
+                    Name
+                </span>
+
+                <strong>
+                    {{ registration.name }}
+                </strong>
+
+            </div>
+
+            <div class="registration-detail">
+
+                <span>
+                    Entry Code
+                </span>
+
+                <strong>
+                    {{ registration.entry_code }}
+                </strong>
+
+            </div>
+
+            <div class="registration-detail">
+
+                <span>
+                    Event
+                </span>
+
+                <strong>
+                    {{ registration.event.name }}
+                </strong>
+
+            </div>
+
+            <div class="registration-detail">
+
+                <span>
+                    Checked In At
+                </span>
+
+                <strong>
+                    {{ registration.checked_in_at|date:"d M Y, h:i A" }}
+                </strong>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- =========================
+             ENTRY APPROVED
+        ========================== -->
+
+        {% if checkin_result == "approved" and registration %}
+
+        <div class="registration-summary">
+
+            <div class="registration-detail">
+
+                <span>
+                    Result
+                </span>
+
+                <strong>
+                    🟢 ENTRY APPROVED
+                </strong>
+
+            </div>
+
+            <div class="registration-detail">
+
+                <span>
+                    Action
+                </span>
+
+                <strong>
+                    ✅ ALLOW ENTRY
+                </strong>
+
+            </div>
+
+            <div class="registration-detail">
+
+                <span>
+                    Entry Code
+                </span>
+
+                <strong>
+                    {{ registration.entry_code }}
+                </strong>
+
+            </div>
+
+            <div class="registration-detail">
+
+                <span>
+                    Name
+                </span>
+
+                <strong>
+                    {{ registration.name }}
+                </strong>
+
+            </div>
+
+            <div class="registration-detail">
+
+                <span>
+                    Phone
+                </span>
+
+                <strong>
+                    {{ registration.phone }}
+                </strong>
+
+            </div>
+
+            <div class="registration-detail">
+
+                <span>
+                    Event
+                </span>
+
+                <strong>
+                    {{ registration.event.name }}
+                </strong>
+
+            </div>
+
+            <div class="registration-detail">
+
+                <span>
+                    Pass
+                </span>
+
+                <strong>
+                    {{ registration.dandiya_pass.name }}
+                </strong>
+
+            </div>
+
+            <div class="registration-detail">
+
+                <span>
+                    Passes
+                </span>
+
+                <strong>
+                    {{ registration.number_of_passes }}
+                </strong>
+
+            </div>
+
+            <div class="registration-detail">
+
+                <span>
+                    Total Amount
+                </span>
+
+                <strong>
+                    ₹{{ registration.total_amount|floatformat:0 }}
+                </strong>
+
+            </div>
+
+            <div class="registration-detail">
+
+                <span>
+                    Checked In At
+                </span>
+
+                <strong>
+                    {{ registration.checked_in_at|date:"d M Y, h:i A" }}
+                </strong>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
 
     </div>
 
 </section>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<!--
+    QR SCANNER LIBRARY
+
+    The browser handles the camera.
+    Django still performs all actual validation.
+-->
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const readerElement = document.getElementById("qr-reader");
+    const statusElement = document.getElementById("scanner-status");
+    const entryInput = document.getElementById(
+        "{{ form.entry_code.id_for_label }}"
+    );
+    const checkinForm = document.getElementById("checkin-form");
+
+
+    if (
+        !readerElement ||
+        !statusElement ||
+        !entryInput ||
+        !checkinForm
+    ) {
+        return;
+    }
+
+
+    let scanSubmitted = false;
+
+
+    const scanner = new Html5Qrcode("qr-reader");
+
+
+    function onScanSuccess(decodedText) {
+
+        if (scanSubmitted) {
+            return;
+        }
+
+
+        const entryCode = decodedText.trim();
+
+
+        if (!entryCode) {
+            return;
+        }
+
+
+        scanSubmitted = true;
+
+
+        statusElement.textContent =
+            "✅ QR detected. Verifying entry...";
+
+
+        entryInput.value = entryCode;
+
+
+        /*
+            Stop the camera before submitting.
+
+            This prevents the scanner from detecting the same
+            QR code repeatedly while Django processes it.
+        */
+        scanner.stop()
+            .then(function () {
+
+                checkinForm.submit();
+
+            })
+            .catch(function () {
+
+                checkinForm.submit();
+
+            });
+
+    }
+
+
+    function onScanFailure(errorMessage) {
+
+        /*
+            QR scanners continuously report frames where no QR
+            code is detected. We intentionally do nothing here.
+        */
+
+    }
+
+
+    Html5Qrcode.getCameras()
+        .then(function (cameras) {
+
+            if (!cameras || cameras.length === 0) {
+
+                statusElement.textContent =
+                    "❌ No camera found. Please use manual entry.";
+
+                return;
+            }
+
+
+            /*
+                Prefer the rear camera on phones.
+
+                Most Android phones expose the rear camera as
+                the second camera, but we search by label first.
+            */
+
+            let cameraId = cameras[0].id;
+
+
+            for (let i = 0; i < cameras.length; i++) {
+
+                const label = (
+                    cameras[i].label || ""
+                ).toLowerCase();
+
+
+                if (
+                    label.includes("back") ||
+                    label.includes("rear") ||
+                    label.includes("environment")
+                ) {
+
+                    cameraId = cameras[i].id;
+                    break;
+
+                }
+
+            }
+
+
+            scanner.start(
+                cameraId,
+                {
+                    fps: 10,
+                    qrbox: {
+                        width: 250,
+                        height: 250
+                    }
+                },
+                onScanSuccess,
+                onScanFailure
+            )
+            .then(function () {
+
+                statusElement.textContent =
+                    "📷 Camera ready. Point it at the customer's QR code.";
+
+            })
+            .catch(function (error) {
+
+                console.error(
+                    "QR scanner error:",
+                    error
+                );
+
+
+                statusElement.textContent =
+                    "❌ Camera access failed. Please allow camera permission or use manual entry.";
+
+            });
+
+        })
+        .catch(function (error) {
+
+            console.error(
+                "Camera detection error:",
+                error
+            );
+
+
+            statusElement.textContent =
+                "❌ Unable to access camera. Please use manual entry.";
+
+        });
+
+});
+
+</script>
 
 {% endblock %}

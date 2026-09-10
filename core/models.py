@@ -61,7 +61,7 @@ class Schedule(models.Model):
         FRIDAY = "Friday", "Friday"
         SATURDAY = "Saturday", "Saturday"
         SUNDAY = "Sunday", "Sunday"
-        ALL_DAYS= "All Days", "All Days"
+        ALL_DAYS = "All Days", "All Days"
 
     dance_class = models.ForeignKey(
         DanceClass,
@@ -419,6 +419,26 @@ class DandiyaRegistration(models.Model):
         blank=True,
     )
 
+    coupon_token = models.UUIDField(
+      null=True,
+      blank=True,
+      unique=True,
+      editable=False,
+    )
+
+    # =====================================================
+    # CHECK-IN TRACKING
+    # =====================================================
+
+    checked_in = models.BooleanField(
+        default=False,
+    )
+
+    checked_in_at = models.DateTimeField(
+        null=True,
+        blank=True,
+    )
+
     message = models.TextField(
         blank=True,
     )
@@ -432,23 +452,37 @@ class DandiyaRegistration(models.Model):
 
     def save(self, *args, **kwargs):
 
-        # Generate an entry code only when creating
-        # a new registration.
+    # =====================================================
+    # GENERATE ENTRY CODE
+    # =====================================================
+
+    # Generate an entry code only when creating
+    # a new registration.
         if not self.entry_code:
 
-            while True:
+          while True:
 
-                code = (
-                    f"WSDC-DAN-"
-                    f"{uuid.uuid4().hex[:8].upper()}"
-                )
+              code = (
+                  f"WSDC-DAN-"
+                  f"{uuid.uuid4().hex[:8].upper()}"
+              )
 
-                if not DandiyaRegistration.objects.filter(
-                    entry_code=code
-                ).exists():
+              if not DandiyaRegistration.objects.filter(
+                  entry_code=code
+              ).exists():
 
-                    self.entry_code = code
-                    break
+                  self.entry_code = code
+                  break
+
+    # =====================================================
+    # GENERATE COUPON TOKEN
+    # =====================================================
+
+    # Every registration must have a unique token
+    # for its secure coupon URL.
+        if not self.coupon_token:
+
+           self.coupon_token = uuid.uuid4()
 
         super().save(*args, **kwargs)
 
