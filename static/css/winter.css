@@ -1,0 +1,556 @@
+
+/* =========================================
+   WSDC WINTER EDITION
+   Phase 1: Theme foundation
+========================================= */
+
+:root {
+    --bg: #160c11;
+    --bg-soft: #241119;
+    --surface: #301a23;
+    --surface-2: #40232d;
+
+    --text: #fff8f0;
+    --muted: #dfcfc8;
+
+    --gold: #c7a363;
+    --gold-light: #f0d5a0;
+
+    --saffron: #c7a363;
+    --maroon: #792f32;
+    --maroon-dark: #3d171e;
+    --red: #a93b45;
+
+    --border: rgba(240, 213, 160, 0.22);
+    --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+/* WINTER BACKGROUND */
+
+body {
+    background:
+        radial-gradient(
+            circle at 12% 12%,
+            rgba(121, 47, 50, 0.25),
+            transparent 35%
+        ),
+        linear-gradient(145deg, #160c11, #241119);
+}
+
+/* NAVIGATION */
+
+.brand {
+    color: var(--gold-light);
+    text-shadow: 0 0 20px rgba(199, 163, 99, 0.35);
+}
+
+.brand::after {
+    content: "❄";
+    color: #fff8f0;
+}
+
+.nav-cta {
+    background: rgba(121, 47, 50, 0.55);
+    border-color: var(--gold);
+}
+
+/* HERO */
+
+.hero {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(22, 12, 17, 0.97) 0%,
+            rgba(61, 23, 30, 0.82) 48%,
+            rgba(22, 12, 17, 0.35) 100%
+        ),
+        url("../images/RITIK BHAIYA.jpg");
+
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-tagline,
+.section-label {
+    color: var(--gold-light);
+}
+
+.hero h1 {
+    color: #fff8f0;
+}
+
+/* BUTTONS */
+
+.btn-primary {
+    background: linear-gradient(
+        135deg,
+        #f0d5a0,
+        #c7a363
+    );
+    color: #241119;
+}
+
+.btn-secondary {
+    border-color: rgba(240, 213, 160, 0.65);
+}
+
+/* SECTION BACKGROUNDS */
+
+.about-section,
+.schedule-section,
+.testimonials-section {
+    background: #241119;
+}
+
+.classes-section,
+.gallery-section,
+.contact-section {
+    background: #160c11;
+}
+
+/* CHRISTMAS DECORATIVE DETAILS */
+
+.section::before,
+.section::after {
+    content: "❄";
+    color: rgba(255, 248, 240, 0.22);
+}
+
+.about-section::before,
+.gallery-section::before,
+.testimonials-section::after {
+    content: "❄";
+    color: rgba(240, 213, 160, 0.55);
+}
+
+.about-image::before {
+    content: "❄";
+    filter: none;
+}
+
+/* CARDS */
+
+.class-card,
+.testimonial-card,
+.contact-card {
+    background: linear-gradient(
+        145deg,
+        #301a23,
+        #1c1016
+    );
+
+    border-color: var(--border);
+}
+
+.class-card:hover,
+.testimonial-card:hover,
+.contact-card:hover {
+    border-color: var(--gold);
+}
+
+/* GALLERY */
+
+.gallery-item {
+    border-color: var(--border);
+}
+
+.gallery-item:hover img {
+    transform: scale(1.1);
+    filter: saturate(1.12) brightness(1.08);
+}
+
+/* FOOTER */
+
+.site-footer {
+    background: #10080d;
+    border-top: 1px solid var(--border);
+}
+
+.footer-content h3 {
+    color: var(--gold-light);
+}
+
+/* ACCESSIBILITY */
+
+@media (prefers-reduced-motion: reduce) {
+    .gallery-item img {
+        transition: none;
+    }
+}
+
+
+/* =========================================
+   WSDC CHRISTMAS ANIMATIONS
+========================================= */
+
+body.winter-home {
+    overflow-x: hidden;
+}
+
+/* Snowfall overlay */
+
+.winter-snow {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.winter-snowflake {
+    position: absolute;
+    top: -15px;
+    display: block;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.65);
+    animation: winter-fall linear infinite;
+}
+
+@keyframes winter-fall {
+    from {
+        transform: translate3d(0, -10px, 0);
+    }
+
+    to {
+        transform: translate3d(35px, 105vh, 0);
+    }
+}
+
+/* Santa's sleigh */
+
+.hero {
+    position: relative;
+    overflow: hidden;
+}
+
+.winter-decoration {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    overflow: hidden;
+}
+
+
+/* =========================================
+   ANIMATED VECTOR SANTA & REINDEER
+========================================= */
+
+.winter-decoration {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.winter-sleigh {
+    position: absolute;
+    top: 11%;
+    left: 0;
+    width: clamp(260px, 37vw, 560px);
+    animation: winter-sleigh-flight 23s linear infinite;
+    will-change: transform;
+    filter: drop-shadow(0 5px 14px rgba(0, 0, 0, 0.35));
+}
+
+.winter-sleigh svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.winter-deer-one {
+    transform-origin: 110px 90px;
+    animation: winter-deer-fly 1.6s ease-in-out infinite;
+}
+
+.winter-deer-two {
+    animation: winter-deer-bob 1.9s ease-in-out infinite;
+}
+
+.winter-sleigh-body {
+    animation: winter-sleigh-bob 2.5s ease-in-out infinite;
+}
+
+@keyframes winter-sleigh-flight {
+    from {
+        transform: translateX(-110%) translateY(12px);
+    }
+
+    to {
+        transform: translateX(110vw) translateY(-35px);
+    }
+}
+
+@keyframes winter-deer-fly {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-7px);
+    }
+}
+
+@keyframes winter-deer-bob {
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.85;
+    }
+}
+
+@keyframes winter-sleigh-bob {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(5px);
+    }
+}
+
+@media (max-width: 700px) {
+    .winter-sleigh {
+        width: 260px;
+        top: 7%;
+        animation-duration: 18s;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .winter-sleigh,
+    .winter-deer-one,
+    .winter-deer-two,
+    .winter-sleigh-body {
+        animation: none !important;
+    }
+
+    .winter-sleigh {
+        left: auto;
+        right: 2%;
+        transform: none;
+    }
+}
+
+
+/* Keep hero content above decoration */
+
+.hero .container {
+    position: relative;
+    z-index: 3;
+}
+
+/* Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+    .winter-snowflake,
+    .winter-sleigh {
+        animation: none !important;
+    }
+
+    .winter-sleigh {
+        left: auto;
+        right: 3%;
+        transform: none;
+    }
+}
+
+@media (max-width: 700px) {
+    .winter-sleigh {
+        top: 8%;
+        font-size: 1.5rem;
+    }
+}
+
+
+/* =========================================
+   HERO REFINEMENT
+========================================= */
+
+/* Richer, more balanced background */
+
+.hero {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(22, 12, 17, 0.96) 0%,
+            rgba(61, 23, 30, 0.84) 48%,
+            rgba(22, 12, 17, 0.58) 100%
+        ),
+        url("../images/RITIK BHAIYA.jpg");
+
+    background-size: cover;
+    background-position: center;
+}
+
+/* Make room for the sleigh */
+
+.winter-sleigh {
+    top: 5%;
+    width: clamp(240px, 29vw, 420px);
+}
+
+/* Remove the floating snowflake beside the logo */
+
+.brand::after {
+    content: none;
+}
+
+/* Keep text clear and readable */
+
+.hero .container {
+    position: relative;
+    z-index: 3;
+}
+
+@media (max-width: 700px) {
+    .winter-sleigh {
+        top: 6%;
+        width: 210px;
+    }
+}
+
+
+/* =========================================
+   AUTO-MOVING INFINITE SERVICE CAROUSEL
+========================================= */
+
+.wsdc-offerings {
+    overflow: hidden;
+}
+
+.wsdc-offerings-track {
+    display: flex;
+    gap: 22px;
+    width: max-content;
+    max-width: none;
+    overflow: visible;
+    padding: 12px 0 25px;
+    scroll-snap-type: none;
+    scroll-behavior: auto;
+    animation: wsdc-auto-slide 35s linear infinite;
+    will-change: transform;
+}
+
+.wsdc-offering-card {
+    flex: 0 0 330px;
+    width: 330px;
+    min-width: 0;
+    scroll-snap-align: none;
+}
+
+/* Pause while hovering or keyboard focusing */
+
+.wsdc-offerings-track:hover,
+.wsdc-offerings-track:focus-within {
+    animation-play-state: paused;
+}
+
+/* Move exactly half the duplicated track */
+
+@keyframes wsdc-auto-slide {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(calc(-50% - 11px));
+    }
+}
+
+@media (max-width: 700px) {
+    .wsdc-offering-card {
+        flex-basis: 270px;
+        width: 270px;
+    }
+
+    .wsdc-offerings-track {
+        animation-duration: 28s;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wsdc-offerings-track {
+        animation: none;
+        overflow-x: auto;
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+/* Carousel animation override */
+
+@media (prefers-reduced-motion: no-preference) {
+    .wsdc-offerings-track[data-loop-ready="true"] {
+        animation: wsdc-auto-slide 35s linear infinite;
+    }
+}
+
+.wsdc-offerings-track[data-loop-ready="true"]:hover,
+.wsdc-offerings-track[data-loop-ready="true"]:focus-within {
+    animation-play-state: paused;
+}
+
+
+/* =========================================
+   HYBRID AUTO + MANUAL CAROUSEL
+========================================= */
+
+.wsdc-offerings {
+    overflow: hidden;
+}
+
+.wsdc-offerings-track {
+    display: flex;
+    gap: 22px;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: none;
+    scroll-behavior: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+    cursor: grab;
+
+    /* Disable old CSS animation */
+    animation: none !important;
+    transform: none !important;
+    will-change: scroll-position;
+}
+
+.wsdc-offerings-track::-webkit-scrollbar {
+    display: none;
+}
+
+.wsdc-offerings-track.is-dragging {
+    cursor: grabbing;
+    user-select: none;
+    scroll-snap-type: none;
+}
+
+.wsdc-offering-card {
+    flex: 0 0 330px;
+    width: 330px;
+    scroll-snap-align: none;
+}
+
+@media (max-width: 700px) {
+    .wsdc-offering-card {
+        flex: 0 0 270px;
+        width: 270px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wsdc-offerings-track {
+        animation: none !important;
+        scroll-behavior: auto;
+    }
+}

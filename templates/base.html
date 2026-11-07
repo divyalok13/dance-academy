@@ -31,6 +31,11 @@
         href="{% static 'css/style.css' %}"
     >
 
+    <link
+        rel="stylesheet"
+        href="{% static 'css/winter.css' %}"
+    >
+
     <!-- FAVICON -->
     <link
         rel="icon"
@@ -168,7 +173,7 @@
 
 
     {% block extra_js %}{% endblock %}
-
+<script src="{% static 'js/winter.js' %}" defer></script>
 </body>
 
 </html>

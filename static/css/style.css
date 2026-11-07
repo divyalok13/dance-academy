@@ -1696,3 +1696,152 @@ textarea {
 #qr-reader__dashboard span {
     color: var(--muted);
 }
+
+
+/* =========================================
+   WHAT WE OFFER CAROUSEL
+========================================= */
+
+.wsdc-offerings {
+    background: linear-gradient(
+        145deg,
+        #241119,
+        #3d171e
+    );
+    padding: 100px 0;
+}
+
+.wsdc-offerings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 30px;
+    margin-bottom: 35px;
+}
+
+.wsdc-offerings-header h2 {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    color: #fff8f0;
+    margin: 12px 0;
+}
+
+.wsdc-offerings-header p {
+    color: #dfcfc8;
+    max-width: 550px;
+}
+
+.wsdc-carousel-controls {
+    display: flex;
+    gap: 12px;
+}
+
+.wsdc-carousel-controls button {
+    width: 46px;
+    height: 46px;
+    border: 1px solid #c7a363;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    color: #f0d5a0;
+    font-size: 22px;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.wsdc-carousel-controls button:hover {
+    background: #c7a363;
+    color: #241119;
+}
+
+.wsdc-offerings-track {
+    display: flex;
+    gap: 22px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    padding: 12px 2px 25px;
+}
+
+.wsdc-offerings-track::-webkit-scrollbar {
+    display: none;
+}
+
+.wsdc-offering-card {
+    flex: 0 0 calc((100% - 44px) / 3);
+    min-width: 0;
+    min-height: 300px;
+    padding: 32px;
+    border-radius: 22px;
+    border: 1px solid rgba(199, 163, 99, 0.25);
+    background: linear-gradient(
+        145deg,
+        rgba(121, 47, 50, 0.6),
+        rgba(22, 12, 17, 0.9)
+    );
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.wsdc-offering-card:hover {
+    transform: translateY(-5px);
+    border-color: #c7a363;
+}
+
+.wsdc-offering-number {
+    color: #c7a363;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+}
+
+.wsdc-offering-card h3 {
+    color: #fff8f0;
+    font-size: 1.45rem;
+    margin: 22px 0 12px;
+}
+
+.wsdc-offering-card p {
+    color: #dfcfc8;
+    line-height: 1.7;
+    margin-bottom: 24px;
+}
+
+.wsdc-offering-card a {
+    margin-top: auto;
+    color: #f0d5a0;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+@media (max-width: 950px) {
+    .wsdc-offering-card {
+        flex-basis: calc((100% - 22px) / 2);
+    }
+}
+
+@media (max-width: 650px) {
+    .wsdc-offerings {
+        padding: 65px 0;
+    }
+
+    .wsdc-offerings-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .wsdc-offering-card {
+        flex-basis: 85%;
+        min-height: 280px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wsdc-offerings-track {
+        scroll-behavior: auto;
+    }
+
+    .wsdc-offering-card {
+        transition: none;
+    }
+}
