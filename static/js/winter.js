@@ -162,6 +162,16 @@ const navToggle = document.querySelector(".nav-toggle");
 
     document.body.classList.add("winter-home");
 
+    // Navigation can grow when the mobile menu opens or text wraps.
+    const header = document.querySelector(".site-header");
+    if (header) {
+        const syncHeroHeader = () => hero.style.setProperty(
+            "--hero-header-height", `${header.getBoundingClientRect().height}px`
+        );
+        syncHeroHeader();
+        new ResizeObserver(syncHeroHeader).observe(header);
+    }
+
     /* =====================================================
        3. ANIMATED SANTA + REINDEER
        ===================================================== */

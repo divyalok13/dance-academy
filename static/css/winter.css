@@ -274,16 +274,6 @@ body.winter-home {
     animation: winter-sleigh-bob 2.5s ease-in-out infinite;
 }
 
-@keyframes winter-sleigh-flight {
-    from {
-        transform: translateX(-110%) translateY(12px);
-    }
-
-    to {
-        transform: translateX(110vw) translateY(-35px);
-    }
-}
-
 @keyframes winter-deer-fly {
     0%, 100% {
         transform: translateY(0);
@@ -489,3 +479,43 @@ body::before { opacity: .022; }
 .trial-section .section-label { color: #684b26; }
 @media(max-width:1000px) { .about-highlights { grid-template-columns: repeat(2,1fr); } }
 @media(max-width:480px) { .about-highlights { grid-template-columns: 1fr; } }
+
+/* Keep the complete Christmas illustration in a lane below navigation. */
+.hero { --hero-header-height: 82px; }
+.hero .winter-decoration {
+    inset: calc(var(--hero-header-height) + 16px) 16px auto;
+    height: 120px;
+}
+.hero .winter-sleigh {
+    top: 0;
+    left: 0;
+    right: auto;
+    width: min(360px, 65vw);
+    animation: winter-sleigh-flight 23s ease-in-out infinite alternate;
+}
+@keyframes winter-sleigh-flight {
+    from { left: 0; transform: translate(0, 8px); }
+    to { left: 100%; transform: translate(-100%, 8px); }
+}
+.hero-content {
+    padding-top: calc(var(--hero-header-height) + 148px);
+    padding-bottom: 64px;
+}
+.hero h1 {
+    max-width: 850px;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    line-height: 1.06;
+    letter-spacing: -.035em;
+}
+.hero h1 span { display: block; }
+@media (max-width: 700px) {
+    .hero {
+        --hero-header-height: 70px;
+        background-image: linear-gradient(90deg, rgba(12,27,22,.94), rgba(12,27,22,.8)), url('../images/RITIK BHAIYA.jpg');
+    }
+    .hero h1 { font-size: clamp(2.5rem, 10vw, 3.6rem); }
+    .hero-description { color: #fff4e8; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .hero .winter-sleigh { left: auto; right: 0; transform: translateY(8px); }
+}
