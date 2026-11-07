@@ -131,29 +131,6 @@ const navToggle = document.querySelector(".nav-toggle");
         }, 6000);
     }
 
-    const dialog = document.querySelector(".gallery-lightbox");
-    const images = [...document.querySelectorAll("a.gallery-item")];
-    if (dialog && images.length) {
-        let index = 0, opener;
-        const show = step => {
-            index = (index + step + images.length) % images.length;
-            const original = images[index].querySelector("img");
-            dialog.querySelector("img").src = images[index].href;
-            dialog.querySelector("img").alt = original.alt;
-            dialog.querySelector("figcaption").textContent = `${original.alt} · ${index + 1} / ${images.length}`;
-        };
-        images.forEach((link, number) => link.addEventListener("click", event => {
-            event.preventDefault(); opener = link; index = number; show(0); dialog.showModal();
-        }));
-        dialog.querySelector("[data-lightbox-close]").addEventListener("click", () => dialog.close());
-        dialog.querySelectorAll("[data-lightbox-step]").forEach(button => button.addEventListener("click", () => show(Number(button.dataset.lightboxStep))));
-        dialog.addEventListener("keydown", event => {
-            if (["ArrowLeft", "ArrowRight"].includes(event.key)) { event.preventDefault(); show(event.key === "ArrowRight" ? 1 : -1); }
-        });
-        dialog.addEventListener("click", event => { if (event.target === dialog) dialog.close(); });
-        dialog.addEventListener("close", () => opener?.focus());
-    }
-
     /* =====================================================
        2. CHRISTMAS EFFECTS: HOMEPAGE ONLY
        ===================================================== */

@@ -83,8 +83,21 @@ class ScheduleAdmin(admin.ModelAdmin):
 @admin.register(GalleryImage)
 class GalleryImageAdmin(admin.ModelAdmin):
 
+    fields = ("title", "image", "video_url", "is_active", "created_at")
+
+    def formfield_for_dbfield(self, db_field, request, **kwargs):
+        if db_field.name == "image":
+            kwargs["label"] = "Photo or video poster"
+            kwargs["help_text"] = "Required image. For a video, upload a poster frame here. Existing photos stay unchanged."
+        return super().formfield_for_dbfield(db_field, request, **kwargs)
+
+    @admin.display(description="Media type")
+    def media_type(self, obj):
+        return obj.media_type.title()
+
     list_display = (
         "title",
+        "media_type",
         "is_active",
         "created_at",
     )

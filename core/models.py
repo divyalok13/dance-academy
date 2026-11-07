@@ -1,4 +1,7 @@
 from django.db import models
+from django.core.validators import URLValidator
+from django.core.exceptions import ValidationError
+from urllib.parse import urlsplit
 import uuid
 
 
@@ -104,6 +107,35 @@ class GalleryImage(models.Model):
     image = models.ImageField(
         upload_to="gallery/",
     )
+
+    video_url = models.URLField(
+        max_length=1000,
+        blank=True,
+        default="",
+        validators=[URLValidator(schemes=["https"])],
+        help_text=(
+            "Optional HTTPS direct video URL (Cloudinary MP4 recommended). "
+            "Upload the clip to Cloudinary first, then paste its delivery URL here. "
+            "The image above is used as its poster. Leave blank for a photo. "
+            "YouTube and other watch-page URLs cannot play in this player."
+        ),
+    )
+
+    def clean(self):
+        super().clean()
+        if self.video_url:
+            try:
+                path = urlsplit(self.video_url).path.lower()
+            except ValueError as error:
+                raise ValidationError({"video_url": "Enter a valid HTTPS video URL."}) from error
+            if not path.endswith((".mp4", ".webm", ".ogv")):
+                raise ValidationError({
+                    "video_url": "Use a direct MP4, WebM or OGV delivery URL, not a video watch page."
+                })
+
+    @property
+    def media_type(self):
+        return "video" if self.video_url else "photo"
 
     is_active = models.BooleanField(
         default=True,

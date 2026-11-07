@@ -9,6 +9,10 @@ WSDC Academy Buxar | Dance, Zumba, Yoga & Fitness
 WSDC Academy in Buxar, Bihar offers Dance, Zumba, Yoga, Choreography, Fitness and Wellness classes for beginners and enthusiasts.
 {% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/gallery.css' %}">
+{% endblock %}
+
 {% block content %}
 
 <!-- =========================================================
@@ -857,37 +861,35 @@ WSDC Academy in Buxar, Bihar offers Dance, Zumba, Yoga, Choreography, Fitness an
         </div>
 
 
-        <div class="gallery-grid">
-
-            {% for image in gallery_images %}
-
-            <a class="gallery-item" href="{{ image.image.url }}" aria-label="View {{ image.title|default:'WSDC Dance Academy' }}">
-
-                <img
-                    src="{{ image.image.url }}"
-                    alt="{{ image.title|default:'WSDC Dance Academy' }}"
-                >
-
-                <div class="gallery-overlay">
-                    ✨ WSDC
-                </div>
-
-            </a>
-
-
-            {% empty %}
-
-            <div class="empty-state">
-
-                <p>
-                    Gallery images will be available soon.
-                </p>
-
-            </div>
-
-            {% endfor %}
-
+        <div class="gallery-filters" role="group" aria-label="Filter gallery" hidden>
+            <button type="button" data-gallery-filter="all" aria-pressed="true" aria-controls="gallery-items">All</button>
+            <button type="button" data-gallery-filter="photo" aria-pressed="false" aria-controls="gallery-items">Photos</button>
+            <button type="button" data-gallery-filter="video" aria-pressed="false" aria-controls="gallery-items">Videos</button>
         </div>
+        <p class="gallery-results" role="status" aria-live="polite" hidden></p>
+        <div class="gallery-grid" id="gallery-items">
+            {% for image in gallery_images %}
+            <a class="gallery-item"
+               href="{% if image.video_url %}{{ image.video_url }}{% else %}{{ image.image.url }}{% endif %}"
+               data-media-type="{% if image.video_url %}video{% else %}photo{% endif %}"
+               data-title="{{ image.title|default:'WSDC Dance Academy' }}"
+               aria-label="{% if image.video_url %}Play video{% else %}View photo{% endif %}: {{ image.title|default:'WSDC Dance Academy' }}">
+                <img src="{{ image.image.url }}"
+                     alt="{{ image.title|default:'WSDC Dance Academy' }}"
+                     loading="lazy" decoding="async" width="640" height="640">
+                {% if image.video_url %}
+                <span class="gallery-play" aria-hidden="true">▶</span>
+                {% endif %}
+                <span class="gallery-card-caption" aria-hidden="true">
+                    <span class="gallery-kind">{% if image.video_url %}FILM{% else %}PHOTO{% endif %}</span>
+                    <span>{{ image.title|default:'WSDC moments' }}</span>
+                </span>
+            </a>
+            {% empty %}
+            <div class="empty-state"><p>Gallery moments will be available soon.</p></div>
+            {% endfor %}
+        </div>
+        <p class="gallery-filter-empty empty-state" hidden>No moments in this category yet. Try another filter.</p>
 
     </div>
 
@@ -1302,10 +1304,17 @@ WSDC Academy in Buxar, Bihar offers Dance, Zumba, Yoga, Choreography, Fitness an
 {% endblock %}
 
 {% block extra_js %}
-<dialog class="gallery-lightbox" aria-label="Gallery image viewer">
-    <button type="button" data-lightbox-close aria-label="Close image viewer">✕</button>
-    <button type="button" data-lightbox-step="-1" aria-label="Previous image">←</button>
-    <figure><img alt=""><figcaption aria-live="polite"></figcaption></figure>
-    <button type="button" data-lightbox-step="1" aria-label="Next image">→</button>
+<dialog class="gallery-lightbox" aria-label="WSDC gallery viewer">
+    <button type="button" data-lightbox-close aria-label="Close gallery viewer">✕</button>
+    <button type="button" data-lightbox-step="-1" aria-label="Previous gallery item">←</button>
+    <figure>
+        <img alt="" hidden>
+        <video controls playsinline preload="none" hidden aria-label="Gallery video"></video>
+        <p class="gallery-media-status" role="status" aria-live="polite"></p>
+        <figcaption aria-live="polite"></figcaption>
+        <a class="gallery-original" target="_blank" rel="noopener">Open original <span aria-hidden="true">↗</span></a>
+    </figure>
+    <button type="button" data-lightbox-step="1" aria-label="Next gallery item">→</button>
 </dialog>
+<script src="{% static 'js/gallery.js' %}" defer></script>
 {% endblock %}
