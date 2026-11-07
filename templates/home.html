@@ -22,7 +22,7 @@ WSDC Academy in Buxar, Bihar offers Dance, Zumba, Yoga, Choreography, Fitness an
     <div class="hero-content">
 
         <p class="hero-festival">
-            ❄ WINTER EDITION • DANCE • CELEBRATION ❄
+            CHRISTMAS AT WSDC · BUXAR
         </p>
 
         <p class="hero-tagline">
@@ -31,7 +31,7 @@ WSDC Academy in Buxar, Bihar offers Dance, Zumba, Yoga, Choreography, Fitness an
 
         <h1>
             WSDC Academy
-            <span>Move. Dance. Grow.</span>
+            <span>Make spirits bright.</span>
         </h1>
 
         <p class="hero-description">
@@ -88,7 +88,7 @@ WSDC Academy in Buxar, Bihar offers Dance, Zumba, Yoga, Choreography, Fitness an
         <div class="section-heading">
 
             <p class="section-label">
-                🪔 ABOUT WSDC
+                THE JOY OF MOVEMENT
             </p>
 
             <h2>
@@ -205,6 +205,7 @@ WSDC Academy in Buxar, Bihar offers Dance, Zumba, Yoga, Choreography, Fitness an
             </div>
         </div>
 
+        <button class="offerings-pause" type="button" hidden>Pause offerings</button>
         <div class="wsdc-offerings-track"
              tabindex="0"
              aria-label="WSDC services">
@@ -860,7 +861,7 @@ WSDC Academy in Buxar, Bihar offers Dance, Zumba, Yoga, Choreography, Fitness an
 
             {% for image in gallery_images %}
 
-            <div class="gallery-item">
+            <a class="gallery-item" href="{{ image.image.url }}" aria-label="View {{ image.title|default:'WSDC Dance Academy' }}">
 
                 <img
                     src="{{ image.image.url }}"
@@ -871,7 +872,7 @@ WSDC Academy in Buxar, Bihar offers Dance, Zumba, Yoga, Choreography, Fitness an
                     ✨ WSDC
                 </div>
 
-            </div>
+            </a>
 
 
             {% empty %}
@@ -922,7 +923,14 @@ WSDC Academy in Buxar, Bihar offers Dance, Zumba, Yoga, Choreography, Fitness an
         </div>
 
 
-        <div class="testimonials-grid">
+        {% if testimonials %}
+        <div class="carousel-controls" aria-label="Testimonial controls">
+            <button type="button" data-testimonial-step="-1" hidden aria-label="Previous testimonial">←</button>
+            <button type="button" data-testimonial-pause hidden>Pause testimonials</button>
+            <button type="button" data-testimonial-step="1" hidden aria-label="Next testimonial">→</button>
+        </div>
+        {% endif %}
+        <div class="testimonials-grid" tabindex="0" aria-label="Student testimonials">
 
             {% for testimonial in testimonials %}
 
@@ -1268,7 +1276,7 @@ WSDC Academy in Buxar, Bihar offers Dance, Zumba, Yoga, Choreography, Fitness an
 
         <div class="navratri-message-content">
 
-            <span>🪔</span>
+            <span aria-hidden="true">❄</span>
 
             <div>
 
@@ -1277,12 +1285,12 @@ WSDC Academy in Buxar, Bihar offers Dance, Zumba, Yoga, Choreography, Fitness an
                 </p>
 
                 <strong>
-                    Happy Navratri from WSDC
+                    Merry Christmas from WSDC
                 </strong>
 
             </div>
 
-            <span>🪔</span>
+            <span aria-hidden="true">❄</span>
 
         </div>
 
@@ -1291,4 +1299,13 @@ WSDC Academy in Buxar, Bihar offers Dance, Zumba, Yoga, Choreography, Fitness an
 </section>
 
 
+{% endblock %}
+
+{% block extra_js %}
+<dialog class="gallery-lightbox" aria-label="Gallery image viewer">
+    <button type="button" data-lightbox-close aria-label="Close image viewer">✕</button>
+    <button type="button" data-lightbox-step="-1" aria-label="Previous image">←</button>
+    <figure><img alt=""><figcaption aria-live="polite"></figcaption></figure>
+    <button type="button" data-lightbox-step="1" aria-label="Next image">→</button>
+</dialog>
 {% endblock %}

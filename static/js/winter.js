@@ -23,156 +23,136 @@ document.addEventListener("DOMContentLoaded", () => {
    1. HYBRID AUTO + MANUAL OFFERINGS CAROUSEL
    ===================================================== */
 
-const offeringsTrack = document.querySelector(
-    ".wsdc-offerings-track"
-);
+const navToggle = document.querySelector(".nav-toggle");
+    const navLinks = document.querySelector(".nav-links");
+    if (navToggle && navLinks) {
+        navToggle.hidden = false;
+        document.documentElement.classList.add("navigation-ready");
+        const close = () => navToggle.setAttribute("aria-expanded", "false");
+        navToggle.addEventListener("click", () => navToggle.setAttribute("aria-expanded", String(navToggle.getAttribute("aria-expanded") !== "true")));
+        navLinks.addEventListener("click", event => { if (event.target.closest("a")) close(); });
+        document.addEventListener("keydown", event => { if (event.key === "Escape" && navToggle.getAttribute("aria-expanded") === "true") { close(); navToggle.focus(); } });
+        document.addEventListener("click", event => { if (!event.target.closest(".navbar")) close(); });
+    }
 
-if (offeringsTrack) {
-    const originalCards = Array.from(
-        offeringsTrack.querySelectorAll(
-            ".wsdc-offering-card"
-        )
-    );
-
-    if (originalCards.length > 0) {
-        const canAnimate = !reduceMotion;
-
-        // Create three sets for seamless looping.
-        if (canAnimate && !offeringsTrack.dataset.loopReady) {
-            const originals = [...originalCards];
-
-            // Add one set before and one after.
-            const prependFragment = document.createDocumentFragment();
-            const appendFragment = document.createDocumentFragment();
-
-            const cloneCard = (card) => {
+    const track = document.querySelector(".wsdc-offerings-track");
+    if (track && track.children.length) {
+        const originals = [...track.children];
+        for (const side of ["before", "after"]) {
+            const fragment = document.createDocumentFragment();
+            originals.forEach(card => {
                 const clone = card.cloneNode(true);
                 clone.setAttribute("aria-hidden", "true");
-                clone.setAttribute("inert", "");
-                clone.removeAttribute("id");
-
-                clone.querySelectorAll("[id]").forEach(
-                    (element) => element.removeAttribute("id")
-                );
-
-                return clone;
-            };
-
-            originals.forEach((card) => {
-                prependFragment.appendChild(cloneCard(card));
-                appendFragment.appendChild(cloneCard(card));
+                clone.querySelectorAll("[id]").forEach(node => node.removeAttribute("id"));
+                clone.querySelectorAll("a, button, [tabindex]").forEach(node => node.tabIndex = -1);
+                fragment.append(clone);
             });
-
-            offeringsTrack.prepend(prependFragment);
-            offeringsTrack.append(appendFragment);
-
-            offeringsTrack.dataset.loopReady = "true";
+            if (side === "before") track.prepend(fragment); else track.append(fragment);
         }
-
-        if (canAnimate) {
-            const totalWidth = offeringsTrack.scrollWidth / 3;
-
-            // Start in the middle set.
-            offeringsTrack.scrollLeft = totalWidth;
-
-            let isDragging = false;
-            let startX = 0;
-            let startScrollLeft = 0;
-            let pausedUntil = 0;
-            let lastFrame = performance.now();
-
-            const speed = 28; // pixels per second
-
-            function normalizeScroll() {
-                if (offeringsTrack.scrollLeft >= totalWidth * 2) {
-                    offeringsTrack.scrollLeft -= totalWidth;
-                } else if (offeringsTrack.scrollLeft < totalWidth) {
-                    offeringsTrack.scrollLeft += totalWidth;
-                }
+        let span = 0, position = 0, dragging = false, moved = false, previousX = 0;
+        let paused = reduceMotion, hovered = false, touching = false, resumeAt = 0, last = performance.now();
+        const measure = () => {
+            span = originals[originals.length - 1].nextElementSibling.offsetLeft - originals[0].offsetLeft;
+            position = span;
+            track.scrollLeft = position;
+        };
+        const normalize = () => {
+            if (!span) return;
+            const next = ((track.scrollLeft - span) % span + span) % span + span;
+            if (Math.abs(next - track.scrollLeft) > 1) track.scrollLeft = next;
+            if (dragging || touching || hovered || paused || performance.now() < resumeAt || track.matches(":focus-within")) position = track.scrollLeft;
+        };
+        new ResizeObserver(measure).observe(track);
+        measure();
+        const pauseButton = document.querySelector(".offerings-pause");
+        pauseButton.hidden = false;
+        const label = () => { pauseButton.textContent = paused ? "Play offerings" : "Pause offerings"; };
+        label();
+        pauseButton.addEventListener("click", () => { paused = !paused; label(); });
+        track.addEventListener("mouseenter", () => hovered = true);
+        track.addEventListener("mouseleave", () => hovered = false);
+        track.addEventListener("pointerdown", event => {
+            if (event.pointerType === "touch") { touching = true; return; }
+            if (event.button !== 0) return;
+            dragging = true; moved = false; previousX = event.clientX;
+        });
+        window.addEventListener("pointermove", event => {
+            if (!dragging) return;
+            const delta = event.clientX - previousX;
+            if (Math.abs(delta) > 2) moved = true;
+            if (moved) { event.preventDefault(); track.classList.add("is-dragging"); track.scrollLeft -= delta; normalize(); }
+            previousX = event.clientX;
+        });
+        const stop = () => { dragging = touching = false; track.classList.remove("is-dragging"); resumeAt = performance.now() + 1800; };
+        window.addEventListener("pointerup", stop);
+        window.addEventListener("pointercancel", stop);
+        window.addEventListener("blur", stop);
+        track.addEventListener("dragstart", event => event.preventDefault());
+        track.addEventListener("click", event => { if (moved) { event.preventDefault(); moved = false; } });
+        track.addEventListener("scroll", () => { normalize(); }, {passive: true});
+        track.addEventListener("wheel", () => resumeAt = performance.now() + 1800, {passive: true});
+        track.addEventListener("keydown", event => {
+            if (["ArrowLeft", "ArrowRight"].includes(event.key)) {
+                event.preventDefault(); track.scrollLeft += event.key === "ArrowRight" ? 290 : -290; normalize();
             }
-
-            function animate(now) {
-                const delta = Math.min(
-                    (now - lastFrame) / 1000,
-                    0.05
-                );
-
-                lastFrame = now;
-
-                const paused =
-                    isDragging ||
-                    offeringsTrack.matches(":hover") ||
-                    offeringsTrack.matches(":focus-within") ||
-                    now < pausedUntil ||
-                    document.hidden;
-
-                if (!paused) {
-                    offeringsTrack.scrollLeft += speed * delta;
-                    normalizeScroll();
-                }
-
-                requestAnimationFrame(animate);
+        });
+        const animate = now => {
+            const delta = Math.min(now - last, 50); last = now;
+            if (!paused && !hovered && !dragging && !touching && !document.hidden && !track.matches(":focus-within") && now > resumeAt) {
+                position += delta * .028;
+                track.scrollLeft = position;
+                if (position >= span * 2) { position -= span; track.scrollLeft = position; }
             }
-
-            offeringsTrack.addEventListener(
-                "pointerdown",
-                (event) => {
-                    if (event.pointerType === "touch") return;
-
-                    isDragging = true;
-                    startX = event.clientX;
-                    startScrollLeft = offeringsTrack.scrollLeft;
-
-                    offeringsTrack.classList.add("is-dragging");
-                    offeringsTrack.setPointerCapture(event.pointerId);
-                }
-            );
-
-            offeringsTrack.addEventListener(
-                "pointermove",
-                (event) => {
-                    if (!isDragging) return;
-
-                    const distance = event.clientX - startX;
-
-                    offeringsTrack.scrollLeft =
-                        startScrollLeft - distance;
-
-                    normalizeScroll();
-                }
-            );
-
-            const stopDragging = () => {
-                isDragging = false;
-                offeringsTrack.classList.remove("is-dragging");
-                pausedUntil = performance.now() + 1800;
-            };
-
-            offeringsTrack.addEventListener(
-                "pointerup",
-                stopDragging
-            );
-
-            offeringsTrack.addEventListener(
-                "pointercancel",
-                stopDragging
-            );
-
-            offeringsTrack.addEventListener(
-                "scroll",
-                () => {
-                    if (!isDragging) {
-                        normalizeScroll();
-                    }
-                },
-                { passive: true }
-            );
-
             requestAnimationFrame(animate);
-        }
+        };
+        requestAnimationFrame(animate);
     }
-}
 
+    const testimonials = document.querySelector(".testimonials-grid");
+    if (testimonials && testimonials.querySelector(".testimonial-card")) {
+        const cards = [...testimonials.querySelectorAll(".testimonial-card")];
+        let paused = reduceMotion;
+        const next = direction => {
+            const current = Math.round(testimonials.scrollLeft / (cards[0].getBoundingClientRect().width + 24));
+            const atEnd = testimonials.scrollLeft >= testimonials.scrollWidth - testimonials.clientWidth - 2;
+            const index = direction > 0 && atEnd ? 0 : (current + direction + cards.length) % cards.length;
+            testimonials.scrollTo({left: cards[index].offsetLeft - cards[0].offsetLeft, behavior: reduceMotion ? "instant" : "smooth"});
+        };
+        document.querySelectorAll("[data-testimonial-step]").forEach(button => {
+            button.hidden = cards.length < 2;
+            button.addEventListener("click", () => next(Number(button.dataset.testimonialStep)));
+        });
+        const button = document.querySelector("[data-testimonial-pause]");
+        button.hidden = cards.length < 2;
+        const label = () => button.textContent = paused ? "Play testimonials" : "Pause testimonials";
+        label(); button.addEventListener("click", () => { paused = !paused; label(); });
+        setInterval(() => {
+            if (!paused && !document.hidden && !testimonials.matches(":hover, :focus-within")) next(1);
+        }, 6000);
+    }
+
+    const dialog = document.querySelector(".gallery-lightbox");
+    const images = [...document.querySelectorAll("a.gallery-item")];
+    if (dialog && images.length) {
+        let index = 0, opener;
+        const show = step => {
+            index = (index + step + images.length) % images.length;
+            const original = images[index].querySelector("img");
+            dialog.querySelector("img").src = images[index].href;
+            dialog.querySelector("img").alt = original.alt;
+            dialog.querySelector("figcaption").textContent = `${original.alt} · ${index + 1} / ${images.length}`;
+        };
+        images.forEach((link, number) => link.addEventListener("click", event => {
+            event.preventDefault(); opener = link; index = number; show(0); dialog.showModal();
+        }));
+        dialog.querySelector("[data-lightbox-close]").addEventListener("click", () => dialog.close());
+        dialog.querySelectorAll("[data-lightbox-step]").forEach(button => button.addEventListener("click", () => show(Number(button.dataset.lightboxStep))));
+        dialog.addEventListener("keydown", event => {
+            if (["ArrowLeft", "ArrowRight"].includes(event.key)) { event.preventDefault(); show(event.key === "ArrowRight" ? 1 : -1); }
+        });
+        dialog.addEventListener("click", event => { if (event.target === dialog) dialog.close(); });
+        dialog.addEventListener("close", () => opener?.focus());
+    }
 
     /* =====================================================
        2. CHRISTMAS EFFECTS: HOMEPAGE ONLY

@@ -48,6 +48,7 @@
 </head>
 
 <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
 
     <!-- =========================
          NAVBAR
@@ -55,7 +56,7 @@
 
     <header class="site-header">
 
-        <nav class="navbar">
+        <nav class="navbar" aria-label="Main navigation">
 
             <a
                 href="{% url 'home' %}"
@@ -64,7 +65,8 @@
                 WSDC
             </a>
 
-            <div class="nav-links">
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" hidden>Menu <span aria-hidden="true">☰</span></button>
+            <div class="nav-links" id="primary-navigation">
 
                 <a href="{% url 'home' %}#about">
                     About
@@ -108,7 +110,7 @@
          MAIN CONTENT
     ========================== -->
 
-    <main>
+    <main id="main-content">
 
         {% block content %}
         {% endblock %}
